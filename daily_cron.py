@@ -15,7 +15,7 @@ from upload_to_youtube import upload_video
 # DAILY AUTOMATION CONFIGURATION — ALL AROUND PODCAST
 # =============================================================================
 # VOICE: BBC Documentary British Male (en-GB-RyanNeural)
-# GUARANTEED DURATION TARGET: 2,650 WORDS = 18 MINUTES LONG-FORM EPISODES
+# Long-form Video Target: 900 – 1000 Seconds (15 to 16 MINUTES, ~2,200 words across 18 scenes)
 # Shorts Target: 25 – 35 Seconds (2 Shorts per topic: Hook A & Hook B, 9:16 vertical)
 
 VOICE = "en-GB-RyanNeural"
@@ -31,15 +31,20 @@ HISTORY_FILE = os.path.join(OUTPUT_DIR, "history.json")
 CHAR_IMAGE_PATH = r"C:\Users\USER\Desktop\Gemini_Generated_Image_jot82wjot82wjot8.png"
 GPAY_QR_PATH = r"C:\Users\USER\Desktop\gpay qr.jpeg"
 
-# GPAY DONATION OUTRO NARRATION
-GPAY_DONATION_TEXT = (
+# GPAY DONATION OUTRO NARRATIONS
+GPAY_DONATION_LONG_TEXT = (
     "If you enjoyed this episode, please consider supporting our channel. "
     "Take a screenshot of the Google Pay QR code on your screen to donate via UPI. "
     "Any contribution, big or small, helps us stay independent and release daily episodes. "
     "Thank you for your generous support!"
 )
 
-# DEEP 18-MINUTE EPISODE QUEUE (2,650 WORDS PER LONG EPISODE)
+GPAY_DONATION_SHORT_TEXT = (
+    "Take a screenshot to donate via Google Pay or UPI. "
+    "Thank you for supporting All Around Podcast!"
+)
+
+# 60-DAY GLOBAL MEGALITHS QUEUE (2,200+ WORDS / 18 SCENES PER 15-MIN LONG EPISODE)
 TOPIC_QUEUE = [
     {
         "id": "sacsayhuaman_peru",
@@ -115,7 +120,7 @@ TOPIC_QUEUE = [
 ]
 
 # =============================================================================
-# GPAY DONATION OUTRO CARD BUILDER
+# GPAY DONATION OUTRO CARD BUILDER (SUPPORT 16:9 AND 9:16)
 # =============================================================================
 def generate_gpay_outro_card(mode="16_9"):
     w, h = (1920, 1080) if mode == "16_9" else (1080, 1920)
@@ -125,11 +130,11 @@ def generate_gpay_outro_card(mode="16_9"):
     if os.path.exists(GPAY_QR_PATH):
         try:
             qr = Image.open(GPAY_QR_PATH).convert("RGB")
-            qr_size = (450, 450) if mode == "16_9" else (480, 480)
+            qr_size = (450, 450) if mode == "16_9" else (500, 500)
             qr_r = qr.resize(qr_size, Image.Resampling.LANCZOS)
 
             pos_x = (w - qr_size[0]) // 2
-            pos_y = (h - qr_size[1]) // 2 - (50 if mode == "16_9" else 100)
+            pos_y = (h - qr_size[1]) // 2 - (50 if mode == "16_9" else 120)
             bg.paste(qr_r, (pos_x, pos_y))
 
             draw.rectangle((pos_x - 6, pos_y - 6, pos_x + qr_size[0] + 6, pos_y + qr_size[1] + 6), outline=(250, 204, 21), width=6)
@@ -137,15 +142,15 @@ def generate_gpay_outro_card(mode="16_9"):
             print(f"GPay QR load error: {e}")
 
     try:
-        font_h = ImageFont.truetype("arialbd.ttf", 46 if mode == "16_9" else 48)
-        font_s = ImageFont.truetype("arial.ttf", 32 if mode == "16_9" else 34)
+        font_h = ImageFont.truetype("arialbd.ttf", 46 if mode == "16_9" else 52)
+        font_s = ImageFont.truetype("arial.ttf", 32 if mode == "16_9" else 36)
     except Exception:
         font_h = font_s = ImageFont.load_default()
 
     draw.text((w // 2, 90 if mode == "16_9" else 220), "SUPPORT OUR CHANNEL", font=font_h, fill=(250, 204, 21), anchor="mm", align="center")
 
     sub_text = "Take a screenshot to donate via Google Pay / UPI.\nAny amount helps us post daily episodes!"
-    draw.text((w // 2, h - (160 if mode == "16_9" else 350)), sub_text, font=font_s, fill=(255, 255, 255), anchor="mm", align="center")
+    draw.text((w // 2, h - (160 if mode == "16_9" else 320)), sub_text, font=font_s, fill=(255, 255, 255), anchor="mm", align="center")
 
     out_file = os.path.join(OUTPUT_DIR, f"temp_gpay_outro_{mode}.jpg")
     bg.save(out_file, quality=95)
@@ -288,7 +293,7 @@ def fetch_wikimedia_hd_images(search_term, count=25):
     return fetched
 
 # =============================================================================
-# VIDEO BUILDER: SAVES DIRECTLY TO UPLOADS FOLDERS (long_format & shorts)
+# VIDEO BUILDER: SAVES DIRECTLY TO UPLOADS FOLDERS WITH GPAY OUTROS ON ALL 3 VIDEOS
 # =============================================================================
 def build_long_and_short_videos(topic_data):
     ep_num = topic_data["ep_num"]
@@ -301,8 +306,8 @@ def build_long_and_short_videos(topic_data):
     if len(images) < len(long_scenes) * 2:
         images.extend(fetch_wikimedia_hd_images("ancient megalithic ruins sunset", count=45))
 
-    # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 1000 - 1200 seconds / 18 MINS)
-    print(f"🎙️ Generating Deep 18-Minute Long-Form Audio Clips with Voice: {VOICE}...")
+    # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 15-18 MINS)
+    print(f"🎙️ Generating Deep 15-18 Minute Long-Form Audio Clips with Voice: {VOICE}...")
     long_clips = []
     for i, s in enumerate(long_scenes):
         sid = i + 1
@@ -335,21 +340,21 @@ def build_long_and_short_videos(topic_data):
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         long_clips.append(scene_v)
 
-    # APPEND GPAY DONATION OUTRO SCENE TO LONG-FORM VIDEO
-    print("💳 Appending GPay Donation Outro Scene...")
-    gpay_audio_path = asyncio.run(generate_scene_audio("long_gpay", 99, GPAY_DONATION_TEXT))
-    gpay_audio_clip = AudioFileClip(gpay_audio_path)
-    gpay_card_path = generate_gpay_outro_card(mode="16_9")
-    gpay_clip = ImageClip(gpay_card_path).with_duration(gpay_audio_clip.duration + 0.5).with_audio(gpay_audio_clip)
-    long_clips.append(gpay_clip)
+    # APPEND GPAY DONATION OUTRO TO LONG-FORM VIDEO
+    print("💳 Appending GPay Donation Outro to Long-Form Video...")
+    gpay_audio_long = asyncio.run(generate_scene_audio("long_gpay", 99, GPAY_DONATION_LONG_TEXT))
+    gpay_audio_long_clip = AudioFileClip(gpay_audio_long)
+    gpay_card_long = generate_gpay_outro_card(mode="16_9")
+    gpay_clip_long = ImageClip(gpay_card_long).with_duration(gpay_audio_long_clip.duration + 0.5).with_audio(gpay_audio_long_clip)
+    long_clips.append(gpay_clip_long)
 
     full_long_video = concatenate_videoclips(long_clips, method="compose")
     long_mp4 = os.path.join(LONG_UPLOADS_DIR, f"Daily_Episode_{ep_num}_Long_16_9.mp4")
     print(f"🚀 Rendering Deep Long-Form Video ({full_long_video.duration:.1f}s / {int(full_long_video.duration/60)}m {int(full_long_video.duration%60)}s) -> {long_mp4}")
     full_long_video.write_videofile(long_mp4, fps=24, codec="libx264", audio_codec="aac", preset="medium")
 
-    # 2. BUILD SHORT HOOK A (9:16 Vertical, 25-35 secs)
-    print("\n🎙️ Generating 25-35s YouTube Short Hook A...")
+    # 2. BUILD SHORT HOOK A (9:16 Vertical, WITH GPAY OUTRO)
+    print("\n🎙️ Generating YouTube Short Hook A (with GPay Outro)...")
     short_a_clips = []
     for i, s in enumerate(short_scenes_a):
         sid = i + 1
@@ -383,13 +388,21 @@ def build_long_and_short_videos(topic_data):
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         short_a_clips.append(scene_v)
 
+    # APPEND GPAY DONATION OUTRO TO SHORT A
+    print("💳 Appending GPay Donation Outro to Short Hook A...")
+    gpay_audio_short_a = asyncio.run(generate_scene_audio("short_a_gpay", 99, GPAY_DONATION_SHORT_TEXT))
+    gpay_audio_short_a_clip = AudioFileClip(gpay_audio_short_a)
+    gpay_card_short_a = generate_gpay_outro_card(mode="9_16")
+    gpay_clip_short_a = ImageClip(gpay_card_short_a).with_duration(gpay_audio_short_a_clip.duration + 0.3).with_audio(gpay_audio_short_a_clip)
+    short_a_clips.append(gpay_clip_short_a)
+
     full_short_a = concatenate_videoclips(short_a_clips, method="compose")
     short_a_mp4 = os.path.join(SHORTS_UPLOADS_DIR, f"Daily_Episode_{ep_num}_ShortA_9_16.mp4")
     print(f"🚀 Rendering Short Hook A ({full_short_a.duration:.1f}s) -> {short_a_mp4}")
     full_short_a.write_videofile(short_a_mp4, fps=24, codec="libx264", audio_codec="aac", preset="medium")
 
-    # 3. BUILD SHORT HOOK B (9:16 Vertical, 25-35 secs)
-    print("\n🎙️ Generating 25-35s YouTube Short Hook B...")
+    # 3. BUILD SHORT HOOK B (9:16 Vertical, WITH GPAY OUTRO)
+    print("\n🎙️ Generating YouTube Short Hook B (with GPay Outro)...")
     short_b_clips = []
     for i, s in enumerate(short_scenes_b):
         sid = i + 1
@@ -422,6 +435,14 @@ def build_long_and_short_videos(topic_data):
         clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         short_b_clips.append(scene_v)
+
+    # APPEND GPAY DONATION OUTRO TO SHORT B
+    print("💳 Appending GPay Donation Outro to Short Hook B...")
+    gpay_audio_short_b = asyncio.run(generate_scene_audio("short_b_gpay", 99, GPAY_DONATION_SHORT_TEXT))
+    gpay_audio_short_b_clip = AudioFileClip(gpay_audio_short_b)
+    gpay_card_short_b = generate_gpay_outro_card(mode="9_16")
+    gpay_clip_short_b = ImageClip(gpay_card_short_b).with_duration(gpay_audio_short_b_clip.duration + 0.3).with_audio(gpay_audio_short_b_clip)
+    short_b_clips.append(gpay_clip_short_b)
 
     full_short_b = concatenate_videoclips(short_b_clips, method="compose")
     short_b_mp4 = os.path.join(SHORTS_UPLOADS_DIR, f"Daily_Episode_{ep_num}_ShortB_9_16.mp4")
