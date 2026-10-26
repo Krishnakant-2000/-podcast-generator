@@ -1,0 +1,16 @@
+# OAuth Credentials & Secret Tokens
+client_secret.json
+token.pickle
+token.json
+
+# Large Video Files & Temporary Cache
+uploads/
+*.mp4
+*.mp3
+*.jpg
+*.jpeg
+*.png
+__pycache__/
+*.tmp
+temp_*
+tmp_*
