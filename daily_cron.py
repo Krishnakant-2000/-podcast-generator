@@ -45,8 +45,8 @@ TOPIC_QUEUE = [
         "id": "derinkuyu_underground_city",
         "category": "Global Megaliths",
         "title": "Derinkuyu: The 18-Story Subterranean City Built to Survive Cosmic Apocalypse",
-        "short_title_a": "Why Did 20,000 People Live 18 Stories Underground in Turkey? #Shorts",
-        "short_title_b": "The 1,000-Pound Rolling Stone Doors of Derinkuyu #Shorts #PreFlood",
+        "short_title_a": "#Shorts | Why Did 20,000 People Live 18 Stories Underground in Turkey?",
+        "short_title_b": "#Shorts | The 1,000-Pound Rolling Stone Doors of Derinkuyu #PreFlood",
         "ep_num": 9,
         "search_term": "Derinkuyu underground city Cappadocia Turkey subterranean tunnels",
         "short_scenes_a": [
