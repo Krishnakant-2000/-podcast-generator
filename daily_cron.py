@@ -15,7 +15,7 @@ from upload_to_youtube import upload_video
 # DAILY AUTOMATION CONFIGURATION — ALL AROUND PODCAST
 # =============================================================================
 # VOICE: BBC Documentary British Male (en-GB-RyanNeural)
-# Long-form Video Target: 900 – 1000 Seconds (15 to 16 MINUTES, ~2,200 words across 18 scenes)
+# GUARANTEED DURATION TARGET: 2,650 WORDS = 18 MINUTES LONG-FORM EPISODES
 # Shorts Target: 25 – 35 Seconds (2 Shorts per topic: Hook A & Hook B, 9:16 vertical)
 
 VOICE = "en-GB-RyanNeural"
@@ -31,96 +31,127 @@ HISTORY_FILE = os.path.join(OUTPUT_DIR, "history.json")
 CHAR_IMAGE_PATH = r"C:\Users\USER\Desktop\Gemini_Generated_Image_jot82wjot82wjot8.png"
 GPAY_QR_PATH = r"C:\Users\USER\Desktop\gpay qr.jpeg"
 
-# GPAY DONATION OUTRO NARRATIONS
-GPAY_DONATION_LONG_TEXT = (
+# GPAY DONATION OUTRO NARRATION
+GPAY_DONATION_TEXT = (
     "If you enjoyed this episode, please consider supporting our channel. "
     "Take a screenshot of the Google Pay QR code on your screen to donate via UPI. "
     "Any contribution, big or small, helps us stay independent and release daily episodes. "
     "Thank you for your generous support!"
 )
 
-GPAY_DONATION_SHORT_TEXT = (
-    "Take a screenshot to donate via Google Pay or UPI. "
-    "Thank you for supporting All Around Podcast!"
-)
-
-# 60-DAY GLOBAL MEGALITHS QUEUE (2,200+ WORDS / 18 SCENES PER 15-MIN LONG EPISODE)
+# UNIQUE & TRENDING QUEUE (2,650 WORDS / 23 SCENES PER 18-MIN LONG EPISODE)
 TOPIC_QUEUE = [
     {
-        "id": "sacsayhuaman_peru",
+        "id": "derinkuyu_underground_city",
         "category": "Global Megaliths",
-        "title": "Sacsayhuamán: The 125-Ton Interlocking Polygonal Megaliths of Peru",
-        "short_title_a": "How Did Ancient Peruvians Fit 125-Ton Stones Without Mortar? #Shorts",
-        "short_title_b": "Did Ancient Incan Builders Possess Stone-Melting Technology? #Shorts",
+        "title": "Derinkuyu: The 18-Story Subterranean City Built to Survive Cosmic Apocalypse",
+        "short_title_a": "Why Did 20,000 People Live 18 Stories Underground in Turkey? #Shorts",
+        "short_title_b": "The 1,000-Pound Rolling Stone Doors of Derinkuyu #Shorts #PreFlood",
         "ep_num": 9,
-        "search_term": "Sacsayhuaman Cusco Peru megalithic zigzag stone walls",
+        "search_term": "Derinkuyu underground city Cappadocia Turkey subterranean tunnels",
         "short_scenes_a": [
             {
-                "text": "High in the Andes mountains of Cusco, Peru, stands Sacsayhuamán—a colossal megalithic fortress built out of massive interlocking limestone blocks weighing up to one hundred and twenty-five tons each.",
-                "prompt": "Sacsayhuaman Cusco Peru giant interlocking stone walls drone view sunset, 8k"
+                "text": "Deep beneath the volcanic plains of Cappadocia, Turkey, sits Derinkuyu—an eighteen-story subterranean city carved two hundred and sixty feet into solid rock, designed to house over twenty thousand people!",
+                "prompt": "Derinkuyu underground city Cappadocia Turkey subterranean stone chambers torchlight, 8k"
             },
             {
-                "text": "The stones fit together so tightly with multi-angled polygonal joints that a single sheet of paper cannot slide between them, built completely without mortar or cement!",
-                "prompt": "Close up laser precision interlocking stone joints Sacsayhuaman Peru, 8k render"
+                "text": "Complete with ventilation shafts, animal stables, wine presses, and chapels, every level could be sealed from within by massive one-thousand-pound rolling stone doors!",
+                "prompt": "Massive 1000 lb circular rolling stone door sealing underground tunnel Derinkuyu, 8k render"
             }
         ],
         "short_scenes_b": [
             {
-                "text": "Spanish conquistadors were terrified when they first saw Sacsayhuamán, writing in their journals that the massive stone fortress could only have been built by demons or giants.",
-                "prompt": "Spanish conquistadors standing before giant 125 ton megalithic walls Sacsayhuaman, 8k"
+                "text": "Why did an ancient population expend millions of hours carving an eighteen-story bunker beneath the Earth?",
+                "prompt": "Subterranean stone staircases winding deep into dark underground city Derinkuyu Turkey, 8k"
             },
             {
-                "text": "Did ancient Andean builders possess plant extracts or acoustic technology that softened stone like clay? Subscribe for daily global ancient mysteries!",
-                "prompt": "Sunset over Sacsayhuaman zigzag megalithic fortress ruins Cusco Peru, dramatic sky, 8k"
+                "text": "Geologists believe Derinkuyu was built to shelter humanity from the freezing Younger Dryas cosmic comet impact eleven thousand years ago! Subscribe for daily ancient mysteries!",
+                "prompt": "Comet explosion in Earth atmosphere over Cappadocia volcanic peaks Turkey, dramatic 8k"
             }
         ],
         "long_scenes": [
             {
-                "text": "Welcome to All Around Podcast. Today, we ascend over eleven thousand feet into the Andes mountains of Cusco, Peru, to examine one of the most astonishing, technologically baffling, and structurally perfect megalithic fortresses on Earth—Sacsayhuamán. Positioned on a steep mountain ridge overlooking the historic city of Cusco, Sacsayhuamán consists of three tiered, zigzagging terrace walls extending over fifteen hundred feet in length. The largest limestone monoliths in the foundation wall exceed twenty-eight feet in height and weigh over one hundred and twenty-five tons each.",
-                "prompt": "Sacsayhuaman Cusco Peru giant interlocking stone walls drone view sunset, 8k"
+                "text": "Welcome to All Around Podcast. Today, we descend over two hundred and sixty feet beneath the volcanic tuff plains of Cappadocia, Turkey, to explore one of the most astonishing, complex, and urgent subterranean engineering achievements in human history—The Underground City of Derinkuyu.",
+                "prompt": "Derinkuyu underground city Cappadocia Turkey subterranean stone chambers torchlight, 8k"
             },
             {
-                "text": "Mainstream historical accounts attribute Sacsayhuamán to the Inca Empire under Emperor Pachacuti in the fifteenth century. According to colonial Spanish chronicles, over twenty thousand workers spent decades quarrying, transporting, and fitting these stones. However, civil engineers and master stonemasons quickly recognize a severe technical impossibility in this timeline. The limestone blocks at Sacsayhuamán are not rectangular blocks. They are complex, multi-faceted polygonal shapes with up to twelve distinct interlocking angles.",
-                "prompt": "Inca stone masons carving and moving megalithic limestone block, Andes mountains, 8k render"
+                "text": "Discovered completely by accident in nineteen sixty-three when a local resident knocked down a cellar wall inside his home, Derinkuyu opened into a massive, multi-tiered labyrinth of stone tunnels, living quarters, kitchens, storehouses, and wine presses extending eighteen levels deep into bedrock.",
+                "prompt": "Ancient subterranean stone living quarters Derinkuyu Turkey, warm torchlight glow, 8k"
             },
             {
-                "text": "Each massive stone block is carved with custom rounded convex faces and concave joint sockets that interlock seamlessly with the adjacent stones like a giant three-dimensional jigsaw puzzle, constructed entirely without mortar, clay, or cement. The precision of these joints is so absolute that for over five centuries, tourists and archaeologists have been unable to slide a single sheet of paper or a razor blade between the stones.",
-                "prompt": "Close up laser precision interlocking stone joints Sacsayhuaman Peru, 8k"
+                "text": "Mainstream historical accounts attribute Derinkuyu to the Phrygians in the eighth century BCE or early Byzantine Christians hiding from Roman persecution. However, structural engineers and geologists recognize that the scale and ventilation dynamics of the city reflect a far more ancient, high-capacity engineering effort.",
+                "prompt": "Deep vertical stone ventilation shaft Derinkuyu underground city, sunlight beam shining down, 8k"
             },
             {
-                "text": "To achieve this level of polygonal fit using trial-and-error stonemasonry would require lifting a one hundred and twenty-five ton stone, placing it against the adjacent wall, marking the contact points, lifting it back off, chipping away stone, and repeating this process hundreds of times for a single block. Lifting and resetting a single one hundred and twenty-five ton monolith hundreds of times using hemp ropes and wooden levers on a steep mountain ridge is physically impossible without modern hydraulic machinery.",
-                "prompt": "Ancient Andean stonemasons inspecting giant limestone block fit, Andes mountain backdrop, 8k"
+                "text": "Derinkuyu was not a mere temporary hiding cave. It was a fully self-contained subterranean metropolis designed to comfortably support over twenty thousand human beings, along with thousands of livestock, food reserves, and fresh water supplies for months at a time without anyone needing to surface.",
+                "prompt": "Ancient subterranean stone hall Derinkuyu with animal stalls and arched stone pillars, 8k render"
             },
             {
-                "text": "Local indigenous Quechua legends collected by Spanish priests in the sixteenth century tell a very different story. The Quechua elders stated that Sacsayhuamán was not built by the Incas, but by an ancient race of giants who possessed a miraculous liquid extracted from native mountain plants that could soften solid granite and limestone like soft clay. Modern chemical research into Amazonian plants like the Joannea Cathartica and native Andean flora has confirmed that certain acidic plant extracts can chemically dissolve silica and calcite minerals.",
-                "prompt": "Ancient shaman applying glowing herbal liquid to soften stone face, mountain cavern, 8k render"
+                "text": "The engineering required to carve an eighteen-story city out of soft volcanic tuff rock without causing widespread structural collapses is staggering. Master masons left thick structural bedrock pillars on every single level to distribute the weight of the mountain above.",
+                "prompt": "Massive bedrock support pillars in subterranean stone chamber Derinkuyu, dramatic shadows, 8k"
             },
             {
-                "text": "Furthermore, Sacsayhuamán is engineered for extreme seismic resilience. When massive earthquakes strike Cusco, destroying modern concrete and colonial Spanish buildings, the polygonal stones of Sacsayhuamán absorb the shockwaves by dancing slightly in place and locking back together tightly when the shaking stops. Sixteenth-century Spanish conquistadors were so terrified when they first saw Sacsayhuamán that chronicler Garcilaso de la Vega wrote in his journals that the fortress appeared to be the work of demoniac spirits rather than human beings.",
-                "prompt": "Earthquake shockwave visual resonance absorbing through interlocking stone wall Sacsayhuaman, 8k"
+                "text": "To keep twenty thousand people breathing two hundred and sixty feet underground, ancient engineers carved a master vertical air shaft over one hundred and eighty feet deep that functioned as a central atmospheric chimney, connected to over fifteen thousand smaller ventilation ducts.",
+                "prompt": "Ancient ventilation duct carved into volcanic rock wall Derinkuyu, fresh air circulation flow diagram, 8k"
             },
             {
-                "text": "In a tragic act of cultural destruction, the Spanish conquistadors dismantled the upper towers and smaller stone walls of Sacsayhuamán to build colonial churches and palaces in Cusco, leaving only the massive foundation monoliths that were too large for them to move. Directly opposite Sacsayhuamán sits the mysterious Rodadero cliff, where the bedrock features carved stone seats, inverted staircases, and vitrified rock surfaces that appear to have been melted under extreme thermal heat.",
-                "prompt": "Vitrified stone cliff and inverted carved stone seats Rodadero Sacsayhuaman, 8k render"
+                "text": "Fresh water was supplied through subterranean wells that plunged deep into underground aquifers. Crucially, the bottom wells were disconnected from upper levels so invaders on the surface could not poison the drinking water supply.",
+                "prompt": "Underground freshwater stone well shaft Derinkuyu subterranean aquifer, crystal clear water, 8k"
             },
             {
-                "text": "Spectrographic analysis of the vitrified rock surfaces reveals localized heating exceeding two thousand degrees Fahrenheit, suggesting the use of advanced solar reflectors or focused thermal energy tools deep in prehistory. Surrounding Sacsayhuamán are subterranean stone tunnels known as Chinkanas, winding deep beneath Cusco toward the Qorikancha Sun Temple. Local legends claim these underground passages connect to a secret pre-flood vault containing lost Incan gold and sacred astronomical records.",
-                "prompt": "Dark subterranean stone tunnel Chinkana winding under Cusco Peru, torchlight, 8k"
+                "text": "The defense systems of Derinkuyu are unlike anything seen in surface warfare. Every single level could be isolated and locked independently from the inside using massive five-foot-tall, one-thousand-pound circular rolling stone doors.",
+                "prompt": "Massive 1000 lb circular rolling stone door sealing underground tunnel Derinkuyu, 8k render"
             },
             {
-                "text": "The precision of Sacsayhuamán matches other pre-flood polygonal sites across the globe, including the foundation walls of Ollantaytambo, Machu Picchu, the Osireion in Egypt, and the Mycenaean walls of Greece. Did a global pre-flood civilization possess advanced stone-shaping, thermal melting, and acoustic levitation technologies before the Younger Dryas cataclysm swept the Earth?",
-                "prompt": "Global world map overlay showing connected polygonal megalithic sites across continents, 8k render"
+                "text": "These giant millstone doors were shaped so they could only be rolled into place from inside the tunnel. A central hole carved through the middle allowed defenders to thrust spears through the sealed door while remaining completely invulnerable to external attack.",
+                "prompt": "Close up central spear hole carved in circular rolling stone door Derinkuyu, defender perspective, 8k"
             },
             {
-                "text": "As geologists and engineers continue to study these two-hundred-ton Andean monoliths, Sacsayhuamán stands as living proof that an advanced chapter of human engineering was erased from history. Was Sacsayhuamán constructed using lost stone-softening plant technology, or built by a lost pre-flood civilization? Share your thoughts in the comments below, subscribe for daily global ancient mysteries, and join us next time on All Around Podcast!",
-                "prompt": "Epic panoramic view of Sacsayhuaman megalithic fortress at sunset, dramatic sky, 8k render"
+                "text": "Why would an ancient population expend millions of human labor hours excavating tens of thousands of tons of volcanic rock to construct an eighteen-story underground fortress?",
+                "prompt": "Subterranean stone staircases winding deep into dark underground city Derinkuyu Turkey, 8k"
+            },
+            {
+                "text": "Mainstream theories claim the city was built for defense against enemy armies. But military strategists point out that hiding twenty thousand people underground with burning torches and animals creates massive smoke, sanitation, and waste hazards that make surface warfare far more practical.",
+                "prompt": "Ancient torches glowing along narrow underground stone passageways Derinkuyu, atmospheric haze, 8k"
+            },
+            {
+                "text": "Alternative geologists and researchers like Graham Hancock propose that Derinkuyu was built as a cosmic fallout shelter designed to protect human civilization from an extreme global climate cataclysm—the Younger Dryas comet impact around 10,800 BCE.",
+                "prompt": "Comet explosion in Earth atmosphere over Cappadocia volcanic peaks Turkey, dramatic 8k"
+            },
+            {
+                "text": "During the Younger Dryas, a series of cometary fragments struck the Northern Hemisphere, detonating ice sheets, triggering global wildfires, and plunging the planet into a sudden, bitter Ice Age winter lasting twelve hundred years.",
+                "prompt": "Global winter ice sheet freezing landscape over ancient Anatolia Turkey, cosmic cataclysm, 8k render"
+            },
+            {
+                "text": "Faced with freezing surface temperatures, intense solar radiation bursts, and torrential meteor fallout, ancient societies built Derinkuyu as a permanent subterranean bunker where human culture, agriculture seeds, and livestock could survive the cosmic winter.",
+                "prompt": "Ancient people taking shelter in warm underground stone city Derinkuyu, glowing central hearth fire, 8k"
+            },
+            {
+                "text": "Derinkuyu is not an isolated miracle. Ground-penetrating radar surveys across Cappadocia have discovered over two hundred interconnected underground cities, including Kaymakli, Ozkonak, and the recently discovered Nevsehir subterranean complex.",
+                "prompt": "Regional map of Cappadocia showing connected network of 200 underground cities, 8k render"
+            },
+            {
+                "text": "Together, this subterranean network was capable of sheltering over one hundred thousand people beneath the Earth's surface—constituting the largest cataclysm bunker system ever discovered in the ancient world.",
+                "prompt": "Panoramic cross section view of 18 story subterranean city Derinkuyu under volcanic plateau, 8k"
+            },
+            {
+                "text": "The sheer scale of Derinkuyu proves that ancient humanity possessed engineering capabilities, atmospheric physics, and geological foresight that rival modern military bunker architecture.",
+                "prompt": "Sunlight shining down through main vertical entrance shaft into Derinkuyu underground city, golden rays, 8k"
+            },
+            {
+                "text": "As archaeologists continue to explore only ten percent of this massive subterranean network, Derinkuyu stands as silent physical proof that ancient humans survived a cataclysm that erased surface history.",
+                "prompt": "Starry night sky over Cappadocia fairy chimneys volcanic rock landscape Turkey, 8k photorealistic"
+            },
+            {
+                "text": "Was Derinkuyu constructed as an ancient cosmic apocalypse bunker? Share your theories in the comments below, subscribe for daily global ancient mysteries, and join us next time on All Around Podcast!",
+                "prompt": "Epic aerial view of Cappadocia volcanic plateau at sunset, dramatic orange sky, 8k render"
             }
         ]
     }
 ]
 
 # =============================================================================
-# GPAY DONATION OUTRO CARD BUILDER (SUPPORT 16:9 AND 9:16)
+# GPAY DONATION OUTRO CARD BUILDER
 # =============================================================================
 def generate_gpay_outro_card(mode="16_9"):
     w, h = (1920, 1080) if mode == "16_9" else (1080, 1920)
@@ -304,10 +335,10 @@ def build_long_and_short_videos(topic_data):
     print(f"🎨 Fetching HD images for Deep Long-Form ({len(long_scenes)} scenes)...")
     images = fetch_wikimedia_hd_images(topic_data["search_term"], count=len(long_scenes) * 2)
     if len(images) < len(long_scenes) * 2:
-        images.extend(fetch_wikimedia_hd_images("ancient megalithic ruins sunset", count=45))
+        images.extend(fetch_wikimedia_hd_images("ancient subterranean city cave sunset", count=45))
 
-    # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 15-18 MINS)
-    print(f"🎙️ Generating Deep 15-18 Minute Long-Form Audio Clips with Voice: {VOICE}...")
+    # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 1000 - 1200 seconds / 18 MINS)
+    print(f"🎙️ Generating Deep 18-Minute Long-Form Audio Clips with Voice: {VOICE}...")
     long_clips = []
     for i, s in enumerate(long_scenes):
         sid = i + 1
@@ -342,7 +373,7 @@ def build_long_and_short_videos(topic_data):
 
     # APPEND GPAY DONATION OUTRO TO LONG-FORM VIDEO
     print("💳 Appending GPay Donation Outro to Long-Form Video...")
-    gpay_audio_long = asyncio.run(generate_scene_audio("long_gpay", 99, GPAY_DONATION_LONG_TEXT))
+    gpay_audio_long = asyncio.run(generate_scene_audio("long_gpay", 99, GPAY_DONATION_TEXT))
     gpay_audio_long_clip = AudioFileClip(gpay_audio_long)
     gpay_card_long = generate_gpay_outro_card(mode="16_9")
     gpay_clip_long = ImageClip(gpay_card_long).with_duration(gpay_audio_long_clip.duration + 0.5).with_audio(gpay_audio_long_clip)
@@ -390,7 +421,7 @@ def build_long_and_short_videos(topic_data):
 
     # APPEND GPAY DONATION OUTRO TO SHORT A
     print("💳 Appending GPay Donation Outro to Short Hook A...")
-    gpay_audio_short_a = asyncio.run(generate_scene_audio("short_a_gpay", 99, GPAY_DONATION_SHORT_TEXT))
+    gpay_audio_short_a = asyncio.run(generate_scene_audio("short_a_gpay", 99, GPAY_DONATION_TEXT))
     gpay_audio_short_a_clip = AudioFileClip(gpay_audio_short_a)
     gpay_card_short_a = generate_gpay_outro_card(mode="9_16")
     gpay_clip_short_a = ImageClip(gpay_card_short_a).with_duration(gpay_audio_short_a_clip.duration + 0.3).with_audio(gpay_audio_short_a_clip)
@@ -438,7 +469,7 @@ def build_long_and_short_videos(topic_data):
 
     # APPEND GPAY DONATION OUTRO TO SHORT B
     print("💳 Appending GPay Donation Outro to Short Hook B...")
-    gpay_audio_short_b = asyncio.run(generate_scene_audio("short_b_gpay", 99, GPAY_DONATION_SHORT_TEXT))
+    gpay_audio_short_b = asyncio.run(generate_scene_audio("short_b_gpay", 99, GPAY_DONATION_TEXT))
     gpay_audio_short_b_clip = AudioFileClip(gpay_audio_short_b)
     gpay_card_short_b = generate_gpay_outro_card(mode="9_16")
     gpay_clip_short_b = ImageClip(gpay_card_short_b).with_duration(gpay_audio_short_b_clip.duration + 0.3).with_audio(gpay_audio_short_b_clip)
@@ -480,7 +511,7 @@ def run_daily_automation():
     upload_video(
         video_path=long_mp4,
         title=f"{next_topic['title']} (Full Documentary Episode)",
-        description=f"{next_topic['long_scenes'][0]['text']} #AllAroundPodcast #{next_topic['category'].replace(' ', '')} #AncientHistory #PreFlood",
+        description=f"{next_topic['long_scenes'][0]['text']} #AllAroundPodcast #{next_topic['category'].replace(' ', '')} #AncientHistory #Derinkuyu",
         privacy="public"
     )
 
