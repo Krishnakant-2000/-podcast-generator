@@ -420,7 +420,7 @@ def build_long_and_short_videos(topic_data):
     full_long_video = concatenate_videoclips(long_clips, method="compose")
     long_mp4 = os.path.join(LONG_UPLOADS_DIR, f"Daily_Episode_{ep_num}_Long_16_9.mp4")
     print(f"🚀 Rendering Deep Long-Form Video ({full_long_video.duration:.1f}s / {int(full_long_video.duration/60)}m {int(full_long_video.duration%60)}s) -> {long_mp4}")
-    full_long_video.write_videofile(long_mp4, fps=24, codec="libx264", audio_codec="aac", preset="medium")
+    full_long_video.write_videofile(long_mp4, fps=24, codec="libx264", audio_codec="aac", preset="ultrafast", threads=16)
 
     # 2. BUILD SHORT HOOK A (9:16 Vertical, WITH GPAY OUTRO)
     print("\n🎙️ Generating YouTube Short Hook A (with GPay Outro)...")
@@ -468,7 +468,7 @@ def build_long_and_short_videos(topic_data):
     full_short_a = concatenate_videoclips(short_a_clips, method="compose")
     short_a_mp4 = os.path.join(SHORTS_UPLOADS_DIR, f"Daily_Episode_{ep_num}_ShortA_9_16.mp4")
     print(f"🚀 Rendering Short Hook A ({full_short_a.duration:.1f}s) -> {short_a_mp4}")
-    full_short_a.write_videofile(short_a_mp4, fps=24, codec="libx264", audio_codec="aac", preset="medium")
+    full_short_a.write_videofile(short_a_mp4, fps=24, codec="libx264", audio_codec="aac", preset="ultrafast", threads=16)
 
     # 3. BUILD SHORT HOOK B (9:16 Vertical, WITH GPAY OUTRO)
     print("\n🎙️ Generating YouTube Short Hook B (with GPay Outro)...")
@@ -516,7 +516,7 @@ def build_long_and_short_videos(topic_data):
     full_short_b = concatenate_videoclips(short_b_clips, method="compose")
     short_b_mp4 = os.path.join(SHORTS_UPLOADS_DIR, f"Daily_Episode_{ep_num}_ShortB_9_16.mp4")
     print(f"🚀 Rendering Short Hook B ({full_short_b.duration:.1f}s) -> {short_b_mp4}")
-    full_short_b.write_videofile(short_b_mp4, fps=24, codec="libx264", audio_codec="aac", preset="medium")
+    full_short_b.write_videofile(short_b_mp4, fps=24, codec="libx264", audio_codec="aac", preset="ultrafast", threads=16)
 
     return long_mp4, short_a_mp4, short_b_mp4
 
