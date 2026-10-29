@@ -325,26 +325,36 @@ def fetch_wikimedia_hd_images(search_term, count=30):
     params = {
         "action": "query",
         "list": "search",
-        "srsearch": "ancient temple",
+        "srsearch": search_term,
         "srnamespace": 6,
-        "srlimit": 40,
+        "srlimit": count * 3,
         "format": "json"
     }
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
     fetched = []
+    seen_titles = set()
     try:
+        print(f"🔍 Fetching topic-accurate HD photos for term: '{search_term}'...")
         req = requests.get(url, params=params, headers=headers, timeout=12)
         if req.status_code == 200:
             results = req.json().get("query", {}).get("search", [])
             for r in results:
                 title = r["title"].replace("File:", "").replace(" ", "_")
+                # Filter out maps, SVG icons, non-photo graphics
+                if any(ext in title.lower() for ext in ['.svg', '.gif', 'map', 'icon', 'logo', 'flag', 'chart']):
+                    continue
+                if title in seen_titles:
+                    continue
+                seen_titles.add(title)
+
                 img_url = f"https://commons.wikimedia.org/wiki/Special:FilePath/{title}?width=1920"
                 try:
-                    r_img = requests.get(img_url, headers=headers, timeout=12)
-                    if r_img.status_code == 200:
+                    r_img = requests.get(img_url, headers=headers, timeout=8)
+                    if r_img.status_code == 200 and len(r_img.content) > 40000:
                         img = Image.open(io.BytesIO(r_img.content)).convert("RGB")
                         if img.width > 800:
                             fetched.append(img)
+                            print(f"  ✓ Fetched HD Photo: {title[:45]} ({img.width}x{img.height})")
                             if len(fetched) >= count:
                                 break
                 except Exception:
@@ -352,10 +362,38 @@ def fetch_wikimedia_hd_images(search_term, count=30):
     except Exception as e:
         print(f"Wikimedia fetch error: {e}")
 
+    # Fallback to secondary search term if topic search returned < 5 images
+    if len(fetched) < 5:
+        print("⚠️ Secondary fallback search for ancient architecture photos...")
+        try:
+            params["srsearch"] = "ancient architecture ruins sunset"
+            req = requests.get(url, params=params, headers=headers, timeout=12)
+            if req.status_code == 200:
+                results = req.json().get("query", {}).get("search", [])
+                for r in results:
+                    title = r["title"].replace("File:", "").replace(" ", "_")
+                    if title in seen_titles:
+                        continue
+                    seen_titles.add(title)
+                    img_url = f"https://commons.wikimedia.org/wiki/Special:FilePath/{title}?width=1920"
+                    try:
+                        r_img = requests.get(img_url, headers=headers, timeout=8)
+                        if r_img.status_code == 200 and len(r_img.content) > 40000:
+                            img = Image.open(io.BytesIO(r_img.content)).convert("RGB")
+                            if img.width > 800:
+                                fetched.append(img)
+                                if len(fetched) >= count:
+                                    break
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
     if len(fetched) == 0:
         fallback_img = Image.new("RGB", (1920, 1080), color=(20, 10, 35))
         fetched.append(fallback_img)
 
+    print(f"✅ Total topic-accurate photos ready for video: {len(fetched)}")
     return fetched
 
 # =============================================================================
