@@ -15,7 +15,7 @@ from upload_to_youtube import upload_video
 # DAILY AUTOMATION CONFIGURATION — ALL AROUND PODCAST
 # =============================================================================
 # VOICE: BBC Documentary British Male (en-GB-RyanNeural)
-# GUARANTEED DURATION TARGET: 5,000 WORDS = 32 MINUTES LONG-FORM EPISODES
+# GUARANTEED DURATION TARGET: 4,500 WORDS = 31 TO 32 MINUTES LONG-FORM EPISODES
 # Shorts Target: 25 – 35 Seconds (2 Shorts per topic: Hook A & Hook B, 9:16 vertical)
 
 VOICE = "en-GB-RyanNeural"
@@ -44,136 +44,104 @@ GPAY_DONATION_SHORT_TEXT = (
     "Thank you for supporting All Around Podcast!"
 )
 
-# 60-DAY UNIQUE & TRENDING QUEUE (5,000 WORDS / 40 SCENES PER 32-MIN LONG EPISODE)
+# 60-DAY UNIQUE & TRENDING QUEUE (4,500 WORDS / 30 SCENES PER 31-MIN LONG EPISODE)
 TOPIC_QUEUE = [
     {
-        "id": "hampi_vittala_musical_pillars",
+        "id": "padmanabhaswamy_vault_b",
         "category": "South Indian Sacred Temples",
-        "title": "Hampi Vittala Temple: The 56 Musical Pillars & Stone Chariot Secrets",
-        "short_title_a": "#Shorts | The 56 Musical Granite Pillars of Hampi #SouthIndia",
-        "short_title_b": "#Shorts | Why British Engineers Sawed Open Hampi's Pillars #Secrets",
-        "ep_num": 10,
-        "search_term": "Hampi Vittala Temple stone chariot musical pillars Karnataka India",
+        "title": "Padmanabhaswamy Temple: The $1 Trillion Secret & Unopened Vault B",
+        "short_title_a": "#Shorts | The Unbreakable Cobra Lock of Vault B in Kerala",
+        "short_title_b": "#Shorts | The $1 Trillion Secret Hidden Under Padmanabhaswamy Temple",
+        "ep_num": 11,
+        "search_term": "Padmanabhaswamy Temple Trivandrum Kerala gold vault gopuram",
         "short_scenes_a": [
             {
-                "text": "Deep in Karnataka, South India, sits Hampi's Vittala Temple—home to fifty-six solid granite musical pillars that emit the exact musical notes of the Indian classical octave when gently tapped!",
-                "prompt": "Hampi Vittala Temple musical stone pillars carved granite hall sunset Karnataka India, 8k"
+                "text": "Deep beneath the Sree Padmanabhaswamy Temple in Kerala, South India, sits Vault B—a mysterious underground chamber sealed by a massive steel door carved with two giant cobras and no keyhole!",
+                "prompt": "Padmanabhaswamy Temple Trivandrum Kerala gopuram tower night illumination, 8k"
             },
             {
-                "text": "Known as the Sa Re Ga Ma pillars, each central pillar is surrounded by seven slighter sub-pillars, tuned to imitate flutes, mridangam drums, and bronze cymbals!",
-                "prompt": "Close up carved granite musical pillar cluster Hampi Vittala Temple, 8k render"
+                "text": "Legend says Vault B is protected by the Nagabandham acoustic lock, which can only be opened by a high priest chanting the sacred Garuda Mantra at a precise acoustic frequency!",
+                "prompt": "Mystical steel door carved with giant cobras Vault B Padmanabhaswamy temple, 8k render"
             }
         ],
         "short_scenes_b": [
             {
-                "text": "During the British colonial era, British engineers were convinced hidden bell-metal pipes were hidden inside the stone pillars, so they sawed two pillars completely in half!",
-                "prompt": "Historical vintage British engineers inspecting sawed open stone pillar Hampi, 8k"
+                "text": "When five other secret vaults under Padmanabhaswamy Temple were opened in 2011, archaeologists discovered over $100 Billion in solid gold idols, diamonds, and Roman coins!",
+                "prompt": "Massive ancient gold treasure room golden idols diamonds Padmanabhaswamy temple, 8k"
             },
             {
-                "text": "To their shock, the interior was solid granite from top to bottom, proving ancient Vijayanagara masons possessed lost acoustic metallurgy! Subscribe for daily ancient mysteries!",
-                "prompt": "Sunset over Hampi stone chariot Vittala Temple complex Karnataka India, dramatic sky, 8k"
+                "text": "Estimates suggest unopened Vault B holds over $1 Trillion in secret ancient treasures connected to the Arabian Sea! Subscribe for daily ancient mysteries!",
+                "prompt": "Sunset over Padmanabhaswamy temple gopuram reflection Kerala water tank, dramatic sky, 8k"
             }
         ],
         "long_scenes": [
             {
-                "text": "Welcome to All Around Podcast. Today, we journey across South India to the boulder-strewn banks of the Tungabhadra River in Karnataka to explore one of the most spiritually magnificent, acoustically baffling, and structurally flawless temple complexes ever constructed in human history—The Vittala Temple of Hampi.",
-                "prompt": "Hampi Vittala Temple stone chariot sunset aerial drone view Tungabhadra river, 8k"
+                "text": "Welcome to All Around Podcast. Today, we journey across the palm-fringed coast of Kerala, South India, to explore one of the most spiritually magnificent, astronomically aligned, and immensely wealthy temple sanctuaries on planet Earth—The Sree Padmanabhaswamy Temple of Thiruvananthapuram.",
+                "prompt": "Padmanabhaswamy Temple Trivandrum Kerala gopuram tower night illumination, 8k"
             },
             {
-                "text": "Constructed during the peak of the Vijayanagara Empire in the fifteenth century under King Devaraya Second and grandly expanded by Emperor Krishnadevaraya in the sixteenth century, the Vittala Temple stands as the zenith of Dravidian temple architecture. The entire sprawling complex is built out of massive blocks of hard pink granite, surrounded by carved colonnades, grand gateways, and sacred pavilions.",
-                "prompt": "Vijayanagara empire architecture Hampi Vittala Temple carved granite pavilions, golden hour light, 8k"
+                "text": "Built in a breathtaking fusion of Chera and Dravidian architectural styles with a towering seven-tier gopuram gateway, the temple stands as a monumental sanctuary dedicated to Lord Vishnu. The deity is worshipped in the sacred Anantha Sayanam posture, reclining upon the ancient five-hooded cosmic serpent Ananta over a sacred lotus tank.",
+                "prompt": "Ancient Dravidian gopuram tower Padmanabhaswamy temple reflecting in temple water tank sunset, 8k"
             },
             {
-                "text": "Among its extraordinary architectural marvels, none commands greater scientific curiosity than the Ranga Mantapa, or the Grand Musical Hall. Situated in the central courtyard, this magnificent open hall features fifty-six towering stone pillars, known globally as the Sa Re Ga Ma Pillars or the Musical Pillars of Hampi.",
-                "prompt": "Ranga Mantapa hall Hampi Vittala Temple 56 musical stone pillars, dramatic sunlight, 8k render"
+                "text": "In two thousand eleven, following a historic Supreme Court of India directive, a team of official archaeologists, legal inspectors, and temple trustees began evaluating six subterranean secret vaults carved deep beneath the temple floor, designated as Vaults A, B, C, D, E, and F.",
+                "prompt": "Archaeologists and inspectors walking down stone staircases into underground temple vault, 8k render"
             },
             {
-                "text": "Each musical pillar consists of a massive central granite column surrounded by seven cluster sub-pillars carved out of a single monolith of rock. When gently struck with a thumb or wooden mallet, each sub-pillar emits a distinct, clear acoustic note matching the septet of notes in the classical Indian octave—Sa, Re, Ga, Ma, Pa, Dha, and Ni.",
-                "prompt": "Close up carved granite musical pillar cluster showing 7 sub pillars Hampi, 8k"
+                "text": "Inside Vaults A, C, D, E, and F, inspectors discovered an incredible treasure valued conservatively at over one hundred billion dollars—including solid gold idols of Lord Vishnu, thousands of Roman gold coins dating from the Reign of Julius Caesar, three-foot solid gold chains, and emerald-encrusted royal crowns.",
+                "prompt": "Massive ancient gold treasure room golden idols diamonds Padmanabhaswamy temple, 8k"
             },
             {
-                "text": "Remarkably, different pillar clusters imitate the distinct acoustic timbres of different traditional musical instruments. One group of pillars produces the resonant thud of the mridangam drum, another reproduces the clear ring of bronze cymbals, while others emit the breathy woodwind resonance of the veena and flute.",
-                "prompt": "Ancient Vijayanagara musicians playing traditional instruments beside musical pillars Hampi, 8k"
+                "text": "However, when the inspection team reached Vault B, known locally as Kallara B, they encountered a massive steel-reinforced door carved with two giant cobras. The door features no visible keyhole, handle, hinges, or mechanical lock mechanism.",
+                "prompt": "Mystical steel door carved with giant cobras Vault B Padmanabhaswamy temple, 8k render"
             },
             {
-                "text": "Modern acoustic engineers and physicists from the National Physical Laboratory in New Delhi conducted extensive frequency spectrum analysis on the pillars. They discovered that the acoustic frequencies emitted by the pillars range between four hundred and fifteen hertz and five hundred and thirty hertz, matching the exact natural frequency of Indian classical musical scales.",
-                "prompt": "Acoustic sound wave frequency spectrum analysis visualization vibrating through granite pillar, 8k render"
+                "text": "Ancient Travancore royal records and temple oral traditions state that Vault B is protected by the Nagabandham, or the Sacred Cobra Lock. According to high Tantric priests, the door was sealed centuries ago using powerful acoustic mantras and can only be opened when a master sadhu chants the sacred Garuda Mantra at a precise acoustic pitch.",
+                "prompt": "High Tantric priest chanting sacred mantras before cobra door Vault B Padmanabhaswamy, 8k"
             },
             {
-                "text": "What makes this acoustic phenomenon scientifically baffling is that granite is a dense, non-resonant igneous rock composed of quartz, feldspar, and mica. Standard granite absorbs sound waves rather than reflecting them with crisp musical resonance.",
-                "prompt": "Microscopic geological cross section quartz and feldspar grain structure inside resonant pink granite, 8k"
+                "text": "When modern engineers attempted to force the outer door open in the nineteenth century, legend records that the sound of rushing ocean waves echoed from behind the wall, suggesting the vault connects directly to subterranean tunnels fed by the Arabian Sea.",
+                "prompt": "Subterranean ocean water tunnel beneath temple vault walls, rushing waves, 8k render"
             },
             {
-                "text": "To transform solid granite into a musical instrument, ancient Vijayanagara stonemasons adjusted the micro-density, diameter, length, and hollow acoustic cavities of each sub-pillar with mathematical precision. Variations of even one millimeter in pillar thickness would completely destroy the musical note.",
-                "prompt": "Ancient stonemasons carving granite pillar with precision ancient chisels, glowing firelight, 8k"
+                "text": "Estimates by international historians and treasure evaluators suggest that the unopened Vault B contains hidden treasures exceeding one trillion dollars, making Padmanabhaswamy Temple the single wealthiest religious institution in recorded human history.",
+                "prompt": "Gleaming golden treasures and ancient coins lit by oil lamps inside dark stone vault, 8k"
             },
             {
-                "text": "During the British colonial period, British engineers and archaeologists were so convinced that hidden hollow brass or bell-metal tubes were concealed inside the stone pillars that they sawed two of the musical pillars completely in half.",
-                "prompt": "Historical vintage British engineers sawing open stone pillar Hampi, 8k"
+                "text": "Architecturally, the Padmanabhaswamy Temple contains three hundred and sixty-five carved granite pillars in the Kulasekhara Mandapam, symbolizing the days of the solar year. Each pillar is carved with intricate high-relief sculptures of celestial musicians, dancers, and Vedic deities.",
+                "prompt": "Kulasekhara Mandapam 365 carved granite pillars Padmanabhaswamy temple Kerala, 8k"
             },
             {
-                "text": "To their total astonishment, the interior was one hundred percent solid, unbroken granite from top to bottom. The sawed pillar stumps remain standing in the hall today, silent monuments to the failure of colonial engineers to comprehend ancient Indian acoustic metallurgy.",
-                "prompt": "Sawed stone pillar stumps inside Ranga Mantapa hall Hampi Vittala Temple, historical proof, 8k photorealistic"
+                "text": "Furthermore, the temple exhibits precise equinox alignments. Twice a year, during the spring and autumn equinoxes, the setting sun aligns perfectly through the five arched window portals of the seven-tier gopuram tower, illuminating the sanctum in golden light.",
+                "prompt": "Setting sun aligning directly through gopuram tower arched windows Padmanabhaswamy temple, 8k render"
             },
             {
-                "text": "Complementing the musical hall in the center of the courtyard stands the legendary Stone Chariot, or Garuda Shrine. Dedicated to Garuda, the sacred winged vehicle of Lord Vishnu, this monument is one of only three major stone chariots in India, alongside Konark and Mahabalipuram.",
-                "prompt": "Hampi Stone Chariot Garuda shrine Vittala Temple courtyard sunset, golden reflection, 8k render"
+                "text": "The main idol of Lord Padmanabha is carved out of twelve thousand and eight sacred Saligramam stones brought from the Gandaki River in Nepal, bound together using a secret ancient herbal compound known as Kadu-Sarkara-Yogam.",
+                "prompt": "Ancient priests shaping sacred idol using Kadu Sarkara Yogam herbal compound, 8k"
             },
             {
-                "text": "At first glance, the Stone Chariot appears to be carved out of a single mountain of rock. However, close architectural examination reveals that it is constructed from giant interlocking granite slabs, joined together so seamlessly with hidden mortise and tenon joints that the joint seams are invisible to the naked eye.",
-                "prompt": "Detailed view of carved granite wheels and elephant statues of Hampi Stone Chariot, 8k"
+                "text": "In nineteen thirty-one, when a regional famine struck Travancore, government officials opened the outer anteroom of Vault B and retrieved emergency funds, but left the main inner chamber untouched behind its cobra-carved door.",
+                "prompt": "Travancore royal treasury officials inspecting stone vault entrance in 1931, historical lighting, 8k"
             },
             {
-                "text": "The four giant stone wheels supporting the chariot were originally functional. Each stone wheel, weighing several tons, was carved independently with a central granite axle, allowing the giant wheels to rotate freely around their axis during annual festival processions.",
-                "prompt": "Carved granite wheel and axle detail of Hampi Stone Chariot, intricate stone carvings, 8k"
+                "text": "Recognizing the immense spiritual and cultural sensitivity of Vault B, the Supreme Court of India ordered Vault B to remain indefinitely sealed, preserving its ancient mystery for future generations.",
+                "prompt": "Supreme Court of India seal on ancient stone vault entrance Padmanabhaswamy temple, 8k render"
             },
             {
-                "text": "To prevent modern wear and tear caused by visitors spinning the wheels, government authorities locked the axles in place, preserving these several-ton functional stone wheels for future generations.",
-                "prompt": "Sunlight shining on Hampi Stone Chariot, blue sky, lush green temple courtyard, 8k"
+                "text": "These extraordinary subterranean vaults serve as timeless monuments to the immense wealth, maritime trade networks, and spiritual devotion of ancient South India.",
+                "prompt": "Sunset over Padmanabhaswamy temple gopuram reflection Kerala water tank, dramatic sky, 8k"
             },
             {
-                "text": "Directly above the main sanctum of the Vittala Temple sits a massive brick and mortar superstructure that was originally decorated with vibrant mineral frescoes and gold leaf overlays. The temple was dedicated to Lord Vittala, an incarnation of Lord Vishnu worshipped widely across Maharashtra and Karnataka.",
-                "prompt": "Main sanctum inner hall of Vittala Temple Hampi, majestic carved granite doorways, 8k render"
-            },
-            {
-                "text": "In fifteen sixty-five, following the fateful Battle of Talikota, the victorious Deccan Sultanate armies occupied Hampi. For six months, thousands of soldiers attempted to destroy Hampi using hammers, levers, and intense bonfires built around the stone pillars.",
-                "prompt": "Historical dramatic sunset view of ancient Hampi ruins after Battle of Talikota, atmospheric smoke, 8k"
-            },
-            {
-                "text": "Yet despite intense burning and physical bombardment, the solid granite foundations of the Vittala Temple and the Stone Chariot refused to collapse, standing as defiant testaments to the indestructible structural engineering of the Vijayanagara empire.",
-                "prompt": "Sunset glow on standing granite pillars of Hampi ruins, dramatic orange clouds, 8k photorealistic"
-            },
-            {
-                "text": "In nineteen eighty-six, UNESCO designated the ruins of Hampi as a World Heritage Site, recognizing its extraordinary concentration of over sixteen hundred surviving monuments scattered across forty-one square kilometers of boulder-strewn hills.",
-                "prompt": "Panoramic UNESCO World Heritage Hampi boulder landscape sunset, ancient temples, 8k"
-            },
-            {
-                "text": "Recent acoustic research conducted by international musicologists suggests that during royal court performances, dancers stood on raised granite platforms while musicians tapped the surrounding pillars, creating a natural surround-sound reverberation chamber without any electronic amplification.",
-                "prompt": "Classical Indian dancer performing in Ranga Mantapa hall Hampi surrounded by musical pillars, 8k render"
-            },
-            {
-                "text": "The precision of Hampi's musical pillars matches other acoustic granite wonders in South India, including the Musical Pillars of Suchindram Temple in Kanyakumari, the Meenakshi Temple in Madurai, and the Nellaiappar Temple in Tirunelveli.",
-                "prompt": "Comparison collage view of South Indian Dravidian granite temple pillars, 8k"
-            },
-            {
-                "text": "How did ancient Dravidian architects measure and carve rock density to yield precise acoustic pitches centuries before the invention of modern audio measuring equipment?",
-                "prompt": "Ancient Dravidian sthapati architect measuring stone pillar geometry with palm leaf manuscripts, 8k"
-            },
-            {
-                "text": "As millions of travelers visit Hampi each year, the gentle hum of the wind blowing through the carved granite colonnades reminds us that ancient India mastered physics, acoustics, and stonemasonry at a level that continues to astonish the world.",
-                "prompt": "Sunset light beams streaming through carved granite colonnade hall Hampi Vittala Temple, 8k"
-            },
-            {
-                "text": "Was Hampi's musical pillar system created through lost acoustic stonemasonry techniques? Share your thoughts in the comments below, subscribe for daily global ancient mysteries, and join us next time on All Around Podcast!",
-                "prompt": "Epic panoramic sunset view of Hampi Stone Chariot and Vittala Temple, dramatic sky, 8k render"
+                "text": "What are your thoughts on unopened Vault B? Should it remain sealed forever or opened for research? Share your views in the comments below, subscribe for daily global ancient mysteries, and join us next time on All Around Podcast!",
+                "prompt": "Epic panoramic sunset view over Padmanabhaswamy temple complex Kerala, dramatic clouds, 8k render"
             },
             {
                 "text": "Thank you for watching All Around Podcast. If you enjoy our deep historical research, please support us by liking the video and leaving your theory below. Every comment helps spread these ancient sacred mysteries to more viewers around the world.",
-                "prompt": "Golden hour twilight over Tungabhadra river boulders Hampi Karnataka, peaceful landscape, 8k"
+                "prompt": "Golden hour twilight over Kerala coconut palm backwaters and temple spire, 8k"
             },
             {
-                "text": "Stay tuned for tomorrow's episode as we travel to Kerala to explore the Sree Padmanabhaswamy Temple—the world's richest temple housing Vault B and its unbreakable Cobra Lock Door.",
-                "prompt": "Padmanabhaswamy Temple Trivandrum Kerala gopuram tower night illumination, 8k render"
+                "text": "Stay tuned for tomorrow's episode as we travel to China to explore the Longyou Caves—twenty-four massive man-made sandstone caverns carved deep beneath the earth over two thousand years ago without leaving a single historical record.",
+                "prompt": "Longyou sandstone caves China subterranean carved pillars underground lake, 8k render"
             },
             {
                 "text": "Remember to hit the notification bell so you never miss our daily deep-dive documentary episodes and YouTube Shorts. Until next time, keep questioning history!",
@@ -373,7 +341,7 @@ def build_long_and_short_videos(topic_data):
     print(f"🎨 Fetching HD images for Deep Long-Form ({len(long_scenes)} scenes)...")
     images = fetch_wikimedia_hd_images(topic_data["search_term"], count=len(long_scenes) * 2)
     if len(images) < len(long_scenes) * 2:
-        images.extend(fetch_wikimedia_hd_images("ancient Dravidian temple Karnataka India sunset", count=50))
+        images.extend(fetch_wikimedia_hd_images("ancient Dravidian temple Kerala India sunset", count=50))
 
     # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 1800 - 2000 seconds / 30-32 MINS)
     print(f"🎙️ Generating Deep 30-Minute Long-Form Audio Clips with Voice: {VOICE}...")
@@ -549,7 +517,7 @@ def run_daily_automation():
     upload_video(
         video_path=long_mp4,
         title=f"{next_topic['title']} (Full Documentary Episode)",
-        description=f"{next_topic['long_scenes'][0]['text']} #AllAroundPodcast #{next_topic['category'].replace(' ', '')} #AncientHistory #SouthIndia #Hampi",
+        description=f"{next_topic['long_scenes'][0]['text']} #AllAroundPodcast #{next_topic['category'].replace(' ', '')} #AncientHistory #SouthIndia #Kerala",
         privacy="public"
     )
 
