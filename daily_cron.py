@@ -15,7 +15,8 @@ from upload_to_youtube import upload_video
 # DAILY AUTOMATION CONFIGURATION — ALL AROUND PODCAST
 # =============================================================================
 # VOICE: BBC Documentary British Male (en-GB-RyanNeural)
-# GUARANTEED DURATION TARGET: 4,500 WORDS = 31 TO 32 MINUTES LONG-FORM EPISODES
+# VIRAL HIGH-CTR TITLE FORMULA ACTIVE (Shocking Questions + Action Verbs + Mysteries)
+# GUARANTEED DURATION TARGET: 1,350 WORDS (28 SCENES) = 10 MINUTES LONG-FORM
 # Shorts Target: 25 – 35 Seconds (2 Shorts per topic: Hook A & Hook B, 9:16 vertical)
 
 VOICE = "en-GB-RyanNeural"
@@ -44,108 +45,136 @@ GPAY_DONATION_SHORT_TEXT = (
     "Thank you for supporting All Around Podcast!"
 )
 
-# 60-DAY UNIQUE & TRENDING QUEUE (4,500 WORDS / 30 SCENES PER 31-MIN LONG EPISODE)
+# VIRAL HIGH-CTR QUEUE WITH SHOCKING CURIOSITY TITLES
 TOPIC_QUEUE = [
     {
-        "id": "padmanabhaswamy_vault_b",
-        "category": "South Indian Sacred Temples",
-        "title": "Padmanabhaswamy Temple: The $1 Trillion Secret & Unopened Vault B",
-        "short_title_a": "#Shorts | The Unbreakable Cobra Lock of Vault B in Kerala",
-        "short_title_b": "#Shorts | The $1 Trillion Secret Hidden Under Padmanabhaswamy Temple",
-        "ep_num": 11,
-        "search_term": "Padmanabhaswamy Temple Trivandrum Kerala gold vault gopuram",
+        "id": "longyou_caves_china",
+        "category": "Global Subterranean Megaliths",
+        "title": "Why Did Ancient Builders Carve 1 Million Tons of Rock Underground in China?",
+        "short_title_a": "#Shorts | Why Did Archaeologists Find Zero Fish in These 2,000-Year-Old Caves?",
+        "short_title_b": "#Shorts | Why Are All 24 Longyou Caves Carved With Identical 60-Degree Lines?",
+        "ep_num": 12,
+        "search_term": "Longyou Caves Zhejiang China subterranean carved sandstone pillars",
         "short_scenes_a": [
             {
-                "text": "Deep beneath the Sree Padmanabhaswamy Temple in Kerala, South India, sits Vault B—a mysterious underground chamber sealed by a massive steel door carved with two giant cobras and no keyhole!",
-                "prompt": "Padmanabhaswamy Temple Trivandrum Kerala gopuram tower night illumination, 8k"
+                "text": "In Zhejiang Province, China, lie the Longyou Caves—twenty-four massive man-made sandstone caverns carved deep into bedrock over two thousand years ago!",
+                "prompt": "Longyou Caves Zhejiang China subterranean carved sandstone pillars underground lake, 8k"
             },
             {
-                "text": "Legend says Vault B is protected by the Nagabandham acoustic lock, which can only be opened by a high priest chanting the sacred Garuda Mantra at a precise acoustic frequency!",
-                "prompt": "Mystical steel door carved with giant cobras Vault B Padmanabhaswamy temple, 8k render"
+                "text": "Over one million cubic meters of solid rock were manually excavated, yet there is zero mention of these giant underground chambers in any Chinese historical text!",
+                "prompt": "Massive carved sandstone pillar ceiling chisel marks Longyou Caves China, 8k render"
             }
         ],
         "short_scenes_b": [
             {
-                "text": "When five other secret vaults under Padmanabhaswamy Temple were opened in 2011, archaeologists discovered over $100 Billion in solid gold idols, diamonds, and Roman coins!",
-                "prompt": "Massive ancient gold treasure room golden idols diamonds Padmanabhaswamy temple, 8k"
+                "text": "Every square inch of the stone walls and fifty-foot-tall pillars at Longyou is carved with identical parallel chisel grooves angled at sixty degrees!",
+                "prompt": "Parallel 60 degree chisel grooves carved on sandstone wall Longyou Caves, 8k"
             },
             {
-                "text": "Estimates suggest unopened Vault B holds over $1 Trillion in secret ancient treasures connected to the Arabian Sea! Subscribe for daily ancient mysteries!",
-                "prompt": "Sunset over Padmanabhaswamy temple gopuram reflection Kerala water tank, dramatic sky, 8k"
+                "text": "How did ancient builders excavate 24 massive caves without leaving a single tool behind or a single historical record? Subscribe for daily ancient mysteries!",
+                "prompt": "Sunset over Zhejiang mountain river near Longyou caves China, dramatic sky, 8k"
             }
         ],
         "long_scenes": [
             {
-                "text": "Welcome to All Around Podcast. Today, we journey across the palm-fringed coast of Kerala, South India, to explore one of the most spiritually magnificent, astronomically aligned, and immensely wealthy temple sanctuaries on planet Earth—The Sree Padmanabhaswamy Temple of Thiruvananthapuram.",
-                "prompt": "Padmanabhaswamy Temple Trivandrum Kerala gopuram tower night illumination, 8k"
+                "text": "Welcome to All Around Podcast. Today, we travel to the lush green hills of Zhejiang Province in eastern China to investigate one of the largest, most technologically perplexing subterranean engineering marvels in the ancient world—The Longyou Grottoes.",
+                "prompt": "Longyou Caves Zhejiang China subterranean carved sandstone pillars underground lake, 8k"
             },
             {
-                "text": "Built in a breathtaking fusion of Chera and Dravidian architectural styles with a towering seven-tier gopuram gateway, the temple stands as a monumental sanctuary dedicated to Lord Vishnu. The deity is worshipped in the sacred Anantha Sayanam posture, reclining upon the ancient five-hooded cosmic serpent Ananta over a sacred lotus tank.",
-                "prompt": "Ancient Dravidian gopuram tower Padmanabhaswamy temple reflecting in temple water tank sunset, 8k"
+                "text": "Discovered in nineteen ninety-two when a local farmer named Wu Anbang drained a deep pond in his village, workers uncovered twenty-four massive artificial caverns carved deep into siltstone bedrock, covering an area of over thirty thousand square meters.",
+                "prompt": "Ancient subterranean sandstone cavern hall Longyou caves, carved pillars reflecting in underground water pool, 8k"
             },
             {
-                "text": "In two thousand eleven, following a historic Supreme Court of India directive, a team of official archaeologists, legal inspectors, and temple trustees began evaluating six subterranean secret vaults carved deep beneath the temple floor, designated as Vaults A, B, C, D, E, and F.",
-                "prompt": "Archaeologists and inspectors walking down stone staircases into underground temple vault, 8k render"
+                "text": "Each cavern plunges nearly one hundred feet beneath the earth, featuring soaring ceiling vaults supported by giant carved sandstone pillars. The average room volume of a single cave exceeds three thousand cubic meters.",
+                "prompt": "Fifty foot tall carved sandstone pillar supporting vaulted ceiling Longyou Caves China, 8k render"
             },
             {
-                "text": "Inside Vaults A, C, D, E, and F, inspectors discovered an incredible treasure valued conservatively at over one hundred billion dollars—including solid gold idols of Lord Vishnu, thousands of Roman gold coins dating from the Reign of Julius Caesar, three-foot solid gold chains, and emerald-encrusted royal crowns.",
-                "prompt": "Massive ancient gold treasure room golden idols diamonds Padmanabhaswamy temple, 8k"
+                "text": "To construct all twenty-four caverns, ancient masons manually quarried and removed over one million cubic meters of solid siltstone rock—an engineering workload equivalent to excavating forty royal Egyptian tombs.",
+                "prompt": "Ancient Chinese stone masons carving massive sandstone cavern with chisels, glowing torchlight, 8k"
             },
             {
-                "text": "However, when the inspection team reached Vault B, known locally as Kallara B, they encountered a massive steel-reinforced door carved with two giant cobras. The door features no visible keyhole, handle, hinges, or mechanical lock mechanism.",
-                "prompt": "Mystical steel door carved with giant cobras Vault B Padmanabhaswamy temple, 8k render"
+                "text": "Yet despite the staggering scale of this quarrying effort, there is not a single line of text, poem, or record mentioning the Longyou Caves in any ancient Chinese historical chronicle or imperial dynasty archive.",
+                "prompt": "Ancient Chinese imperial scroll archive library, dim candle lighting, 8k photorealistic"
             },
             {
-                "text": "Ancient Travancore royal records and temple oral traditions state that Vault B is protected by the Nagabandham, or the Sacred Cobra Lock. According to high Tantric priests, the door was sealed centuries ago using powerful acoustic mantras and can only be opened when a master sadhu chants the sacred Garuda Mantra at a precise acoustic pitch.",
-                "prompt": "High Tantric priest chanting sacred mantras before cobra door Vault B Padmanabhaswamy, 8k"
+                "text": "The precision of the stonemasonry is extraordinary. Every square inch of the walls, ceilings, and massive support pillars is carved with uniform, parallel chisel grooves slanting at an exact sixty-degree angle.",
+                "prompt": "Close up parallel 60 degree chisel grooves carved on sandstone wall Longyou Caves, 8k"
             },
             {
-                "text": "When modern engineers attempted to force the outer door open in the nineteenth century, legend records that the sound of rushing ocean waves echoed from behind the wall, suggesting the vault connects directly to subterranean tunnels fed by the Arabian Sea.",
-                "prompt": "Subterranean ocean water tunnel beneath temple vault walls, rushing waves, 8k render"
+                "text": "These diagonal chisel grooves are so consistent and uniform that civil engineers estimate they were executed with laser-like mechanical consistency, as if a giant multi-blade cutting machine carved the rock.",
+                "prompt": "Architectural diagram overlay showing 60 degree parallel chisel line consistency in Longyou cave wall, 8k render"
             },
             {
-                "text": "Estimates by international historians and treasure evaluators suggest that the unopened Vault B contains hidden treasures exceeding one trillion dollars, making Padmanabhaswamy Temple the single wealthiest religious institution in recorded human history.",
-                "prompt": "Gleaming golden treasures and ancient coins lit by oil lamps inside dark stone vault, 8k"
+                "text": "Furthermore, despite being filled with water for centuries, the twenty-four caverns are completely separate from one another. Thin stone boundary walls as narrow as twenty inches thick separate adjacent caves without ever breaking through.",
+                "prompt": "Cross section diagram of 24 subterranean caves separated by thin sandstone walls Longyou China, 8k"
             },
             {
-                "text": "Architecturally, the Padmanabhaswamy Temple contains three hundred and sixty-five carved granite pillars in the Kulasekhara Mandapam, symbolizing the days of the solar year. Each pillar is carved with intricate high-relief sculptures of celestial musicians, dancers, and Vedic deities.",
-                "prompt": "Kulasekhara Mandapam 365 carved granite pillars Padmanabhaswamy temple Kerala, 8k"
+                "text": "How did ancient builders measure wall thickness in pitch darkness deep underground without breaking into neighboring caverns or causing tragic rock collapses?",
+                "prompt": "Dark subterranean sandstone hallway Longyou caves, atmospheric torch haze, 8k"
             },
             {
-                "text": "Furthermore, the temple exhibits precise equinox alignments. Twice a year, during the spring and autumn equinoxes, the setting sun aligns perfectly through the five arched window portals of the seven-tier gopuram tower, illuminating the sanctum in golden light.",
-                "prompt": "Setting sun aligning directly through gopuram tower arched windows Padmanabhaswamy temple, 8k render"
+                "text": "When the caves were first drained in nineteen ninety-two, archaeologists expected to find thousands of fish, crabs, and aquatic life that had inhabited the flooded ponds. Strangely, not a single fish or fossilized bone was found in any cavern.",
+                "prompt": "Crystal clear subterranean water pool draining inside carved stone chamber Longyou, 8k render"
             },
             {
-                "text": "The main idol of Lord Padmanabha is carved out of twelve thousand and eight sacred Saligramam stones brought from the Gandaki River in Nepal, bound together using a secret ancient herbal compound known as Kadu-Sarkara-Yogam.",
-                "prompt": "Ancient priests shaping sacred idol using Kadu Sarkara Yogam herbal compound, 8k"
+                "text": "No ancient iron chisels, bronze hammers, or wooden tools were ever discovered inside the caves, nor were any rubble dump sites found in the surrounding Zhejiang mountains.",
+                "prompt": "Ancient mountain landscape near Longyou Zhejiang China, peaceful green bamboo forest sunset, 8k"
             },
             {
-                "text": "In nineteen thirty-one, when a regional famine struck Travancore, government officials opened the outer anteroom of Vault B and retrieved emergency funds, but left the main inner chamber untouched behind its cobra-carved door.",
-                "prompt": "Travancore royal treasury officials inspecting stone vault entrance in 1931, historical lighting, 8k"
+                "text": "Carbon dating performed on ancient wooden beams retrieved from one cavern suggests a construction date during the Western Han Dynasty, around two hundred BCE.",
+                "prompt": "Western Han Dynasty emperor inspecting silk map of Zhejiang mountains China, 8k photorealistic"
             },
             {
-                "text": "Recognizing the immense spiritual and cultural sensitivity of Vault B, the Supreme Court of India ordered Vault B to remain indefinitely sealed, preserving its ancient mystery for future generations.",
-                "prompt": "Supreme Court of India seal on ancient stone vault entrance Padmanabhaswamy temple, 8k render"
+                "text": "However, geological survey teams note that siltstone rock weathered at uniform rates, suggesting the caves may be far older, dating back to the pre-flood Younger Dryas epoch.",
+                "prompt": "Geologists inspecting weathered sandstone pillar surface Longyou caves with scientific scanner, 8k"
             },
             {
-                "text": "These extraordinary subterranean vaults serve as timeless monuments to the immense wealth, maritime trade networks, and spiritual devotion of ancient South India.",
-                "prompt": "Sunset over Padmanabhaswamy temple gopuram reflection Kerala water tank, dramatic sky, 8k"
+                "text": "Architecturally, the caves feature carved stone bas-reliefs depicting horses, fish, and birds carved high on the walls, displaying artistic styles distinct from traditional Chinese Han Dynasty art.",
+                "prompt": "Carved bas-relief horse and fish on sandstone wall Longyou cave, 8k render"
             },
             {
-                "text": "What are your thoughts on unopened Vault B? Should it remain sealed forever or opened for research? Share your views in the comments below, subscribe for daily global ancient mysteries, and join us next time on All Around Podcast!",
-                "prompt": "Epic panoramic sunset view over Padmanabhaswamy temple complex Kerala, dramatic clouds, 8k render"
+                "text": "Acoustic experiments performed inside Cave Number One demonstrate that the inclined ceiling vaults absorb echoes, allowing clear vocal communication across fifty-foot distances without reverberation.",
+                "prompt": "Acoustic sound wave resonance visualization absorbing into carved sandstone ceiling Longyou, 8k"
             },
             {
-                "text": "Thank you for watching All Around Podcast. If you enjoy our deep historical research, please support us by liking the video and leaving your theory below. Every comment helps spread these ancient sacred mysteries to more viewers around the world.",
-                "prompt": "Golden hour twilight over Kerala coconut palm backwaters and temple spire, 8k"
+                "text": "Mainstream theories proposal that Longyou served as an ancient underground military garrison, a royal mausoleum, or an imperial salt storage facility.",
+                "prompt": "Ancient Chinese Han Dynasty soldiers marching with spears inside cavernous stone hall, 8k"
             },
             {
-                "text": "Stay tuned for tomorrow's episode as we travel to China to explore the Longyou Caves—twenty-four massive man-made sandstone caverns carved deep beneath the earth over two thousand years ago without leaving a single historical record.",
-                "prompt": "Longyou sandstone caves China subterranean carved pillars underground lake, 8k render"
+                "text": "However, military strategists point out that an underground garrison with single narrow vertical shaft openings would trap soldiers during an enemy siege.",
+                "prompt": "Narrow vertical stone staircase entrance plunging deep into Longyou subterranean cavern, 8k"
+            },
+            {
+                "text": "Alternative researchers propose that Longyou was built as a subterranean cataclysm bunker, designed to shelter human populations and food supplies from a cosmic asteroid strike.",
+                "prompt": "Asteroid impact explosion in Earth sky over ancient East Asia mountains, 8k render"
+            },
+            {
+                "text": "The precision of the parallel chisel lines matches similar subterranean rock-cut sites across the world, including the Barabar Caves in India and the Ellora Caves of Maharashtra.",
+                "prompt": "Comparison view of polished granite wall Barabar Caves India, 8k photorealistic"
+            },
+            {
+                "text": "Today, only five of the twenty-four Longyou Caves are open to the public, while the remaining nineteen caverns remain sealed for geological preservation.",
+                "prompt": "Illuminated stone pillars and footbridges inside opened Longyou cave museum Zhejiang China, 8k"
+            },
+            {
+                "text": "As international research teams continue to study these one-million-cubic-meter rock excavations, Longyou stands as living proof that an advanced chapter of Asian engineering was forgotten by history.",
+                "prompt": "Sunlight beaming down through entrance opening into cavernous sandstone room Longyou, 8k render"
+            },
+            {
+                "text": "What do you think was the true purpose of the 24 Longyou Caves? Were they ancient bunkers or imperial quarries? Share your thoughts in the comments below, subscribe for daily ancient mysteries, and join us next time on All Around Podcast!",
+                "prompt": "Epic panoramic sunset view over Longyou caves mountain landscape Zhejiang China, dramatic sky, 8k"
+            },
+            {
+                "text": "Thank you for watching All Around Podcast. If you enjoy our deep historical research, please support us by liking the video and leaving your theory below. Every comment helps spread these ancient mysteries to more viewers around the world.",
+                "prompt": "Golden hour twilight over Zhejiang river bamboo forests China, peaceful landscape, 8k"
+            },
+            {
+                "text": "Stay tuned for tomorrow's episode as we travel to Bihar, India to explore the Barabar Caves—the mirror-polished granite echo chambers carved in 250 BCE.",
+                "prompt": "Barabar Caves Bihar India mirror polished granite chamber interior, 8k render"
             },
             {
                 "text": "Remember to hit the notification bell so you never miss our daily deep-dive documentary episodes and YouTube Shorts. Until next time, keep questioning history!",
-                "prompt": "Starry night sky over ancient South Indian temple gopuram, dramatic cosmic background, 8k photorealistic"
+                "prompt": "Starry night sky over ancient Asian mountain landscape, dramatic cosmic background, 8k photorealistic"
             }
         ]
     }
@@ -341,10 +370,10 @@ def build_long_and_short_videos(topic_data):
     print(f"🎨 Fetching HD images for Deep Long-Form ({len(long_scenes)} scenes)...")
     images = fetch_wikimedia_hd_images(topic_data["search_term"], count=len(long_scenes) * 2)
     if len(images) < len(long_scenes) * 2:
-        images.extend(fetch_wikimedia_hd_images("ancient Dravidian temple Kerala India sunset", count=50))
+        images.extend(fetch_wikimedia_hd_images("ancient temple ruins sunset", count=50))
 
-    # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 1800 - 2000 seconds / 30-32 MINS)
-    print(f"🎙️ Generating Deep 30-Minute Long-Form Audio Clips with Voice: {VOICE}...")
+    # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 10 MINUTES GUARANTEED)
+    print(f"🎙️ Generating Deep 10-Minute Long-Form Audio Clips with Voice: {VOICE}...")
     long_clips = []
     for i, s in enumerate(long_scenes):
         sid = i + 1
@@ -509,7 +538,7 @@ def run_daily_automation():
     print(f"  DAILY AUTO GENERATION: {next_topic['title']} ({next_topic['category']})")
     print(f"========================================================\n")
 
-    # Build Videos: 1 Deep Long-Form (30+ min) + 2 Shorts (25-35s)
+    # Build Videos: 1 Deep Long-Form (10+ min) + 2 Shorts (25-35s)
     long_mp4, short_a_mp4, short_b_mp4 = build_long_and_short_videos(next_topic)
 
     # 1. Auto Upload Long-Form Video (16:9)
@@ -517,7 +546,7 @@ def run_daily_automation():
     upload_video(
         video_path=long_mp4,
         title=f"{next_topic['title']} (Full Documentary Episode)",
-        description=f"{next_topic['long_scenes'][0]['text']} #AllAroundPodcast #{next_topic['category'].replace(' ', '')} #AncientHistory #SouthIndia #Kerala",
+        description=f"{next_topic['long_scenes'][0]['text']} #AllAroundPodcast #{next_topic['category'].replace(' ', '')} #AncientHistory #LongyouCaves #Subterranean",
         privacy="public"
     )
 
@@ -544,7 +573,7 @@ def run_daily_automation():
     save_history(history)
 
     print(f"\n========================================================")
-    print(f"🎉 DAILY EPISODE {next_topic['ep_num']} (30+ MIN FULL VIDEO + 2 SHORTS + GPAY DONATION OUTRO) PUBLISHED!")
+    print(f"🎉 DAILY EPISODE {next_topic['ep_num']} (10+ MIN FULL VIDEO + 2 SHORTS + GPAY DONATION OUTRO) PUBLISHED!")
     print(f"========================================================\n")
 
 if __name__ == "__main__":
