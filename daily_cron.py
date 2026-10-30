@@ -332,6 +332,140 @@ def generate_subscribe_cta_card(mode="9_16"):
     bg.save(out_file, quality=95)
     return out_file
 
+def prepare_avatar_intro_clip(mode="16_9", topic_title="Lepakshi Temple Mystery"):
+    """
+    Renders the generic intro avatar video with the channel name 'ALL AROUND PODCAST'
+    and the topic title in bold capital letters at the top-middle of the frame.
+    """
+    src_file = "intro_video.mp4"
+    src = os.path.join(OUTPUT_DIR, src_file)
+    if not os.path.exists(src):
+        return None
+
+    ass_filename = f"temp_intro_heading_{mode}.ass"
+    ass_path = os.path.join(OUTPUT_DIR, ass_filename)
+    out_filename = f"temp_intro_processed_{mode}.mp4"
+    out_mp4 = os.path.join(OUTPUT_DIR, out_filename)
+
+    w, h = (1920, 1080) if mode == "16_9" else (1080, 1920)
+    font_main = 54 if mode == "16_9" else 64
+    font_sub = 36 if mode == "16_9" else 42
+    margin_v = 70 if mode == "16_9" else 220
+
+    ass_content = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: {w}
+PlayResY: {h}
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: ChannelHeading,Arial Black,{font_main},&H0000FFFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,6,4,8,40,40,{margin_v},1
+Style: TopicSub,Arial Black,{font_sub},&H00FFFFFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,4,2,8,40,40,{margin_v + (65 if mode == '16_9' else 85)},1
+
+[Events]
+Format: Layer, Start, End, Style, Text
+Dialogue: 0,0:00:00.00,0:00:15.00,ChannelHeading,ALL AROUND PODCAST
+Dialogue: 0,0:00:00.00,0:00:15.00,TopicSub,{topic_title.upper()}
+"""
+    with open(ass_path, "w", encoding="utf-8") as f:
+        f.write(ass_content)
+
+    import subprocess
+    if mode == "16_9":
+        filter_str = (
+            f"[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,boxblur=25:15,setsar=1[bg];"
+            f"[0:v]scale=-2:1080,setsar=1[fg];"
+            f"[bg][fg]overlay=(W-w)/2:0,subtitles={ass_filename}[v]"
+        )
+    else:
+        filter_str = f"scale=1080:1920,setsar=1,subtitles={ass_filename}[v]"
+
+    cmd = [
+        "ffmpeg", "-y", "-i", src_file,
+        "-filter_complex", filter_str,
+        "-map", "[v]", "-map", "0:a:0",
+        "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-r", "24",
+        out_filename
+    ]
+    try:
+        res = subprocess.run(cmd, cwd=OUTPUT_DIR, capture_output=True, text=True, check=True)
+        print(f"✅ Intro avatar clip processed successfully ({mode}) -> {out_mp4}")
+        return out_mp4
+    except Exception as e:
+        print(f"Intro avatar processing error: {e}")
+        return None
+
+def prepare_avatar_outro_clip(mode="16_9"):
+    """
+    Renders the generic outro avatar video with 'SUBSCRIBE NOW' in bold capital letters
+    at the top-middle of the frame.
+    """
+    src_file = "outro_video.mp4"
+    src = os.path.join(OUTPUT_DIR, src_file)
+    if not os.path.exists(src):
+        return None
+
+    ass_filename = f"temp_outro_heading_{mode}.ass"
+    ass_path = os.path.join(OUTPUT_DIR, ass_filename)
+    out_filename = f"temp_outro_processed_{mode}.mp4"
+    out_mp4 = os.path.join(OUTPUT_DIR, out_filename)
+
+    w, h = (1920, 1080) if mode == "16_9" else (1080, 1920)
+    font_main = 56 if mode == "16_9" else 64
+    font_sub = 36 if mode == "16_9" else 42
+    margin_v = 70 if mode == "16_9" else 240
+
+    ass_content = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: {w}
+PlayResY: {h}
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: OutroTop,Arial Black,{font_main},&H00FFFFFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,6,4,8,40,40,{margin_v},1
+Style: OutroSub,Arial Black,{font_sub},&H0000FFFF,&H000000FF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,4,2,8,40,40,{margin_v + (65 if mode == '16_9' else 85)},1
+
+[Events]
+Format: Layer, Start, End, Style, Text
+Dialogue: 0,0:00:00.00,0:00:02.80,OutroTop,{{\\c&H0000FF&\\b1}}SUBSCRIBE NOW
+Dialogue: 0,0:00:00.00,0:00:02.80,OutroSub,FOR DAILY ANCIENT MYSTERIES
+Dialogue: 0,0:00:02.80,0:00:06.50,OutroTop,{{\\c&H00FFFF&\\b1}}NAMASTE & JAI HIND
+"""
+    with open(ass_path, "w", encoding="utf-8") as f:
+        f.write(ass_content)
+
+    import subprocess
+    if mode == "16_9":
+        filter_str = (
+            f"[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,boxblur=25:15,setsar=1[bg];"
+            f"[0:v]scale=-2:1080,setsar=1[fg];"
+            f"[bg][fg]overlay=(W-w)/2:0,subtitles={ass_filename}[v]"
+        )
+    else:
+        filter_str = f"scale=1080:1920,setsar=1,subtitles={ass_filename}[v]"
+
+    cmd = [
+        "ffmpeg", "-y", "-i", src_file,
+        "-filter_complex", filter_str,
+        "-map", "[v]", "-map", "0:a:0",
+        "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-r", "24",
+        out_filename
+    ]
+    try:
+        res = subprocess.run(cmd, cwd=OUTPUT_DIR, capture_output=True, text=True, check=True)
+        print(f"✅ Outro avatar clip processed successfully ({mode}) -> {out_mp4}")
+        return out_mp4
+    except Exception as e:
+        print(f"Outro avatar processing error: {e}")
+        return None
+    except Exception as e:
+        print(f"Outro avatar processing error: {e}")
+        return None
+
 def add_subtitles_to_image(image, text, mode="16_9"):
     img = image.copy()
     draw = ImageDraw.Draw(img)
@@ -519,6 +653,14 @@ def build_long_and_short_videos(topic_data):
     # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 10 MINUTES GUARANTEED)
     print(f"🎙️ Generating Deep 10-Minute Long-Form Audio Clips with Voice: {VOICE}...")
     long_clips = []
+
+    from moviepy import VideoFileClip
+    # 0. PREPEND AVATAR INTRO CLIP (WITH CHANNEL NAME AT TOP-MIDDLE)
+    intro_mp4 = prepare_avatar_intro_clip(mode="16_9", topic_title=topic_data.get("title", "Lepakshi Temple Mystery"))
+    if intro_mp4 and os.path.exists(intro_mp4):
+        print("🎬 Prepending Avatar Intro Video (16:9)...")
+        long_clips.append(VideoFileClip(intro_mp4))
+
     for i, s in enumerate(long_scenes):
         sid = i + 1
         narration = s["text"]
@@ -553,7 +695,6 @@ def build_long_and_short_videos(topic_data):
         k1 = render_kenburns_clip(i1_path, half_dur, v1_path, mode="16_9", zoom_type=z1)
         k2 = render_kenburns_clip(i2_path, dur - half_dur, v2_path, mode="16_9", zoom_type=z2)
 
-        from moviepy import VideoFileClip
         if k1 and os.path.exists(k1) and k2 and os.path.exists(k2):
             clip1 = VideoFileClip(k1)
             clip2 = VideoFileClip(k2)
@@ -564,13 +705,11 @@ def build_long_and_short_videos(topic_data):
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         long_clips.append(scene_v)
 
-    # APPEND SUBSCRIBE CTA TO LONG-FORM VIDEO (BEFORE GPAY)
-    print("🔔 Appending Subscribe CTA to Long-Form Video...")
-    sub_audio_long = asyncio.run(generate_scene_audio("long_sub", 98, SUBSCRIBE_CTA_LONG_TEXT))
-    sub_audio_long_clip = AudioFileClip(sub_audio_long)
-    sub_card_long = generate_subscribe_cta_card(mode="16_9")
-    sub_clip_long = ImageClip(sub_card_long).with_duration(sub_audio_long_clip.duration + 0.4).with_audio(sub_audio_long_clip)
-    long_clips.append(sub_clip_long)
+    # APPEND AVATAR OUTRO CLIP (WITH 'SUBSCRIBE NOW' IN BOLD CAPITALS AT TOP-MIDDLE)
+    outro_mp4 = prepare_avatar_outro_clip(mode="16_9")
+    if outro_mp4 and os.path.exists(outro_mp4):
+        print("🎬 Appending Avatar Outro Video (16:9)...")
+        long_clips.append(VideoFileClip(outro_mp4))
 
     # APPEND GPAY DONATION OUTRO TO LONG-FORM VIDEO
     print("💳 Appending GPay Donation Outro to Long-Form Video...")
@@ -596,6 +735,12 @@ def build_long_and_short_videos(topic_data):
     # 2. BUILD SHORT HOOK A (9:16 Vertical, WITH GPAY OUTRO)
     print("\n🎙️ Generating YouTube Short Hook A (with GPay Outro)...")
     short_a_clips = []
+
+    # Prepend Avatar Intro Video (9:16)
+    intro_short_a = prepare_avatar_intro_clip(mode="9_16", topic_title=topic_data.get("title", "Lepakshi Temple Mystery"))
+    if intro_short_a and os.path.exists(intro_short_a):
+        print("🎬 Prepending Avatar Intro Video to Short A (9:16)...")
+        short_a_clips.append(VideoFileClip(intro_short_a))
     for i, s in enumerate(short_scenes_a):
         sid = i + 1
         narration = s["text"]
@@ -640,13 +785,11 @@ def build_long_and_short_videos(topic_data):
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         short_a_clips.append(scene_v)
 
-    # APPEND SUBSCRIBE CTA TO SHORT A (RIGHT BEFORE GPAY OUTRO)
-    print("🔔 Appending Subscribe CTA to Short Hook A...")
-    sub_audio_short_a = asyncio.run(generate_scene_audio("short_a_sub", 98, SUBSCRIBE_CTA_SHORT_TEXT))
-    sub_audio_short_a_clip = AudioFileClip(sub_audio_short_a)
-    sub_card_short_a = generate_subscribe_cta_card(mode="9_16")
-    sub_clip_short_a = ImageClip(sub_card_short_a).with_duration(sub_audio_short_a_clip.duration + 0.3).with_audio(sub_audio_short_a_clip)
-    short_a_clips.append(sub_clip_short_a)
+    # APPEND AVATAR OUTRO CLIP (WITH 'SUBSCRIBE NOW' IN BOLD CAPITALS AT TOP-MIDDLE)
+    outro_short_a = prepare_avatar_outro_clip(mode="9_16")
+    if outro_short_a and os.path.exists(outro_short_a):
+        print("🎬 Appending Avatar Outro Video to Short A (9:16)...")
+        short_a_clips.append(VideoFileClip(outro_short_a))
 
     # APPEND GPAY DONATION OUTRO TO SHORT A
     print("💳 Appending GPay Donation Outro to Short Hook A...")
@@ -672,6 +815,12 @@ def build_long_and_short_videos(topic_data):
     # 3. BUILD SHORT HOOK B (9:16 Vertical, WITH GPAY OUTRO)
     print("\n🎙️ Generating YouTube Short Hook B (with GPay Outro)...")
     short_b_clips = []
+
+    # Prepend Avatar Intro Video (9:16)
+    intro_short_b = prepare_avatar_intro_clip(mode="9_16", topic_title=topic_data.get("title", "Lepakshi Temple Mystery"))
+    if intro_short_b and os.path.exists(intro_short_b):
+        print("🎬 Prepending Avatar Intro Video to Short B (9:16)...")
+        short_b_clips.append(VideoFileClip(intro_short_b))
     for i, s in enumerate(short_scenes_b):
         sid = i + 1
         narration = s["text"]
@@ -715,13 +864,11 @@ def build_long_and_short_videos(topic_data):
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         short_b_clips.append(scene_v)
 
-    # APPEND SUBSCRIBE CTA TO SHORT B (RIGHT BEFORE GPAY OUTRO)
-    print("🔔 Appending Subscribe CTA to Short Hook B...")
-    sub_audio_short_b = asyncio.run(generate_scene_audio("short_b_sub", 98, SUBSCRIBE_CTA_SHORT_TEXT))
-    sub_audio_short_b_clip = AudioFileClip(sub_audio_short_b)
-    sub_card_short_b = generate_subscribe_cta_card(mode="9_16")
-    sub_clip_short_b = ImageClip(sub_card_short_b).with_duration(sub_audio_short_b_clip.duration + 0.3).with_audio(sub_audio_short_b_clip)
-    short_b_clips.append(sub_clip_short_b)
+    # APPEND AVATAR OUTRO CLIP (WITH 'SUBSCRIBE NOW' IN BOLD CAPITALS AT TOP-MIDDLE)
+    outro_short_b = prepare_avatar_outro_clip(mode="9_16")
+    if outro_short_b and os.path.exists(outro_short_b):
+        print("🎬 Appending Avatar Outro Video to Short B (9:16)...")
+        short_b_clips.append(VideoFileClip(outro_short_b))
 
     # APPEND GPAY DONATION OUTRO TO SHORT B
     print("💳 Appending GPay Donation Outro to Short Hook B...")
