@@ -558,8 +558,64 @@ def save_history(history):
     with open(HISTORY_FILE, "w") as f:
         json.dump(history, f, indent=2)
 
-async def generate_scene_audio(tag, sid, text):
+def enhance_audio_file(src_path, out_path):
+    """
+    Applies gentle warmth and presence enhancement to remove sub-bass desk rumble,
+    boost level to broadcast volume, and keep 100% of the natural vocal tone.
+    """
+    import subprocess
+    cmd = [
+        "ffmpeg", "-y", "-i", src_path,
+        "-af", "highpass=f=75,volume=1.8,alimiter=limit=0.95",
+        "-c:a", "libmp3lame", "-q:a", "2",
+        out_path
+    ]
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+    return out_path
+
+def find_user_audio_for_scene(sid, audio_dir):
+    """
+    Searches user's audio directory for a recording matching scene `sid`.
+    Supports patterns: 'Road Number 1.m4a.mp4', 'Road Number 1 2.m4a.mp4',
+    '1.mp3', '2.m4a', 'scene_1.wav', etc.
+    """
+    if not audio_dir or not os.path.exists(audio_dir):
+        return None
+    files = os.listdir(audio_dir)
+    target_names = []
+    if sid == 1:
+        target_names = ["road number 1.m4a.mp4", "1.mp3", "1.m4a", "1.wav", "scene_1.mp3", "scene_1.m4a", "road number 1.m4a"]
+    else:
+        target_names = [f"road number 1 {sid}.m4a.mp4", f"{sid}.mp3", f"{sid}.m4a", f"{sid}.wav", f"scene_{sid}.mp3", f"scene_{sid}.m4a", f"road number 1 {sid}.m4a"]
+
+    for f in files:
+        f_lower = f.lower()
+        if f_lower in target_names or f_lower.endswith(f" {sid}.m4a.mp4") or f_lower == f"{sid}.m4a.mp4" or f_lower == f"{sid}.mp3":
+            return os.path.join(audio_dir, f)
+    return None
+
+async def generate_scene_audio(tag, sid, text, user_audio_dir=None):
     audio_path = os.path.join(OUTPUT_DIR, f"temp_daily_audio_{tag}_{sid}.mp3")
+
+    # Check for user's real voice recording first
+    if user_audio_dir:
+        match_sid = sid
+        # For shorts, map to corresponding long scenes if direct short audio not present
+        if tag == "short_a":
+            match_sid = 5 if sid == 1 else 6
+        elif tag == "short_b":
+            match_sid = 14 if sid == 1 else 16
+
+        user_raw = find_user_audio_for_scene(match_sid, user_audio_dir)
+        if user_raw and os.path.exists(user_raw):
+            print(f"  🎙️ Using your real voice for {tag} scene {sid} (source: {os.path.basename(user_raw)})...")
+            try:
+                enhance_audio_file(user_raw, audio_path)
+                return audio_path
+            except Exception as e:
+                print(f"  ⚠️ Error enhancing user audio for scene {sid}: {e}. Falling back to TTS.")
+
+    # Fallback to Edge-TTS if no user recording
     communicate = edge_tts.Communicate(text, VOICE, rate="-2%", pitch="-1Hz")
     await communicate.save(audio_path)
     return audio_path
@@ -641,17 +697,31 @@ def fetch_wikimedia_hd_images(search_term, count=30):
 # =============================================================================
 # VIDEO BUILDER: SAVES DIRECTLY TO UPLOADS FOLDERS WITH GPAY OUTROS ON ALL 3 VIDEOS
 # =============================================================================
-def build_long_and_short_videos(topic_data):
+def build_long_and_short_videos(topic_data, user_audio_dir=None):
     ep_num = topic_data["ep_num"]
     long_scenes = topic_data.get("long_scenes", [])
     short_scenes_a = topic_data.get("short_scenes_a", topic_data.get("short_scenes", []))
     short_scenes_b = topic_data.get("short_scenes_b", topic_data.get("short_scenes", []))
 
+    if user_audio_dir is None:
+        user_audio_dir = topic_data.get("user_audio_dir")
+    if user_audio_dir is None:
+        default_desktop = os.path.join(os.path.expanduser("~"), "Desktop", "audio lepakshi")
+        if os.path.exists(default_desktop):
+            user_audio_dir = default_desktop
+        else:
+            default_local = os.path.join(OUTPUT_DIR, "user_voice")
+            if os.path.exists(default_local):
+                user_audio_dir = default_local
+
+    if user_audio_dir and os.path.exists(user_audio_dir):
+        print(f"🎙️ USER AUDIO DETECTED: Automatically enhancing and syncing your real voice from: {user_audio_dir}")
+
     print(f"🎨 Fetching HD images for Deep Long-Form ({len(long_scenes)} scenes)...")
     images = fetch_wikimedia_hd_images(topic_data["search_term"], count=len(long_scenes) * 2)
 
     # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 10 MINUTES GUARANTEED)
-    print(f"🎙️ Generating Deep 10-Minute Long-Form Audio Clips with Voice: {VOICE}...")
+    print(f"🎙️ Generating Deep Long-Form Audio Clips with Voice/Recordings...")
     long_clips = []
 
     from moviepy import VideoFileClip
@@ -664,7 +734,7 @@ def build_long_and_short_videos(topic_data):
     for i, s in enumerate(long_scenes):
         sid = i + 1
         narration = s["text"]
-        a_path = asyncio.run(generate_scene_audio("long", sid, narration))
+        a_path = asyncio.run(generate_scene_audio("long", sid, narration, user_audio_dir=user_audio_dir))
         audio_clip = AudioFileClip(a_path)
         dur = audio_clip.duration + 0.3
         half_dur = dur / 2.0
@@ -744,7 +814,7 @@ def build_long_and_short_videos(topic_data):
     for i, s in enumerate(short_scenes_a):
         sid = i + 1
         narration = s["text"]
-        a_path = asyncio.run(generate_scene_audio("short_a", sid, narration))
+        a_path = asyncio.run(generate_scene_audio("short_a", sid, narration, user_audio_dir=user_audio_dir))
         audio_clip = AudioFileClip(a_path)
         dur = audio_clip.duration + 0.2
         half_dur = dur / 2.0
@@ -824,7 +894,7 @@ def build_long_and_short_videos(topic_data):
     for i, s in enumerate(short_scenes_b):
         sid = i + 1
         narration = s["text"]
-        a_path = asyncio.run(generate_scene_audio("short_b", sid, narration))
+        a_path = asyncio.run(generate_scene_audio("short_b", sid, narration, user_audio_dir=user_audio_dir))
         audio_clip = AudioFileClip(a_path)
         dur = audio_clip.duration + 0.2
         half_dur = dur / 2.0

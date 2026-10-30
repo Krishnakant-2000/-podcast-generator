@@ -22,38 +22,11 @@ def main():
     long_mp4, short_a_mp4, short_b_mp4 = daily_cron.build_long_and_short_videos(topic)
 
     print(f"\n========================================================")
-    print(f"  ALL VIDEOS RENDERED SUCCESSFULLY!")
+    print(f"  🎉 ALL VIDEOS RENDERED SUCCESSFULLY WITH YOUR VOICE!")
     print(f"  Long-Form: {long_mp4}")
     print(f"  Short A:   {short_a_mp4}")
     print(f"  Short B:   {short_b_mp4}")
     print(f"========================================================\n")
-
-    # 2. Upload Long-Form Video (16:9)
-    print("🚀 Auto Uploading Deep Long-Form Subtitled Video (16:9)...")
-    upload_video(
-        video_path=long_mp4,
-        title=f"{topic['title']} (Full Documentary)",
-        description=f"{topic['long_scenes'][0]['text']} #AllAroundPodcast #{topic['category'].replace(' ', '')} #Lepakshi #HangingPillar #AndhraPradesh #AncientIndia #History #Mystery",
-        privacy="public"
-    )
-
-    # 3. Auto Upload Short Hook A (9:16)
-    print("\n🚀 Auto Uploading YouTube Short Hook A (9:16)...")
-    upload_video(
-        video_path=short_a_mp4,
-        title=topic.get("short_title_a", topic["title"]),
-        description=f"{topic['short_scenes_a'][0]['text']} #Shorts #AllAroundPodcast #Lepakshi #FloatingPillar #AncientEngineering",
-        privacy="public"
-    )
-
-    # 4. Auto Upload Short Hook B (9:16)
-    print("\n🚀 Auto Uploading YouTube Short Hook B (9:16)...")
-    upload_video(
-        video_path=short_b_mp4,
-        title=topic.get("short_title_b", topic["title"]),
-        description=f"{topic['short_scenes_b'][0]['text']} #Shorts #AllAroundPodcast #GiantFootprint #LepakshiMystery",
-        privacy="public"
-    )
 
     # Update history.json
     history = daily_cron.load_history()
