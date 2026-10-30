@@ -45,6 +45,17 @@ GPAY_DONATION_SHORT_TEXT = (
     "Thank you for supporting All Around Podcast!"
 )
 
+# SUBSCRIBE CTA NARRATIONS (100% FREE & 1-CLICK CALL TO ACTION)
+SUBSCRIBE_CTA_SHORT_TEXT = (
+    "Subscribe to support our channel! It is completely free and just one click away. "
+    "Tap subscribe right now for daily ancient discoveries!"
+)
+
+SUBSCRIBE_CTA_LONG_TEXT = (
+    "If you enjoyed this mystery, please subscribe to support our channel. "
+    "It is completely free, takes just one click, and ensures you never miss our daily deep-dive documentaries!"
+)
+
 # VIRAL HIGH-CTR QUEUE WITH SHOCKING CURIOSITY TITLES
 TOPIC_QUEUE = [
     {
@@ -272,6 +283,55 @@ def overlay_character_host(bg_img, mode="16_9"):
     img.paste(avatar, (pos_x, pos_y), mask=avatar)
     return img.convert('RGB')
 
+def generate_subscribe_cta_card(mode="9_16"):
+    w, h = (1920, 1080) if mode == "16_9" else (1080, 1920)
+    bg = Image.new("RGB", (w, h), color=(10, 6, 22))
+    draw = ImageDraw.Draw(bg)
+
+    # Avatar Badge centered near the top
+    av_size = (260, 260) if mode == "9_16" else (200, 200)
+    av = create_avatar_badge(size=av_size)
+    if av:
+        av_x = (w - av_size[0]) // 2
+        av_y = 260 if mode == "9_16" else 120
+        bg.paste(av.convert("RGB"), (av_x, av_y), mask=av)
+
+    try:
+        font_kicker = ImageFont.truetype("arialbd.ttf", 38 if mode == "9_16" else 30)
+        font_title = ImageFont.truetype("arialbd.ttf", 54 if mode == "9_16" else 46)
+        font_btn = ImageFont.truetype("arialbd.ttf", 52 if mode == "9_16" else 44)
+        font_sub = ImageFont.truetype("arialbd.ttf", 40 if mode == "9_16" else 32)
+        font_sub2 = ImageFont.truetype("arial.ttf", 32 if mode == "9_16" else 26)
+    except Exception:
+        font_kicker = font_title = font_btn = font_sub = font_sub2 = ImageFont.load_default()
+
+    kicker_y = 590 if mode == "9_16" else 360
+    title_y = 660 if mode == "9_16" else 425
+    draw.text((w // 2, kicker_y), "ENJOYED THIS EPISODE?", font=font_kicker, fill=(250, 204, 21), anchor="mm", align="center")
+    draw.text((w // 2, title_y), "SUPPORT OUR CHANNEL", font=font_title, fill=(255, 255, 255), anchor="mm", align="center")
+
+    # Big Red YouTube Subscribe Pill Button
+    btn_w = 660 if mode == "9_16" else 540
+    btn_h = 130 if mode == "9_16" else 105
+    btn_x0 = (w - btn_w) // 2
+    btn_y0 = (h // 2) - 40 if mode == "9_16" else 530
+    btn_box = (btn_x0, btn_y0, btn_x0 + btn_w, btn_y0 + btn_h)
+
+    # Gold accent border + Vivid Red button
+    draw.rounded_rectangle((btn_box[0] - 5, btn_box[1] - 5, btn_box[2] + 5, btn_box[3] + 5), radius=38, fill=(250, 204, 21))
+    draw.rounded_rectangle(btn_box, radius=35, fill=(225, 29, 72))
+    draw.text((w // 2, btn_y0 + btn_h // 2), "SUBSCRIBE", font=font_btn, fill=(255, 255, 255), anchor="mm", align="center")
+
+    # Call-to-action text: It's free and one click away
+    sub_y1 = btn_y0 + btn_h + 90 if mode == "9_16" else btn_y0 + btn_h + 60
+    sub_y2 = sub_y1 + 60 if mode == "9_16" else sub_y1 + 45
+    draw.text((w // 2, sub_y1), "It's 100% FREE & Only 1 Click Away!", font=font_sub, fill=(250, 204, 21), anchor="mm", align="center")
+    draw.text((w // 2, sub_y2), "Tap Subscribe below for daily ancient mysteries", font=font_sub2, fill=(220, 225, 240), anchor="mm", align="center")
+
+    out_file = os.path.join(OUTPUT_DIR, f"temp_subscribe_cta_{mode}.jpg")
+    bg.save(out_file, quality=95)
+    return out_file
+
 def add_subtitles_to_image(image, text, mode="16_9"):
     img = image.copy()
     draw = ImageDraw.Draw(img)
@@ -309,9 +369,51 @@ def add_subtitles_to_image(image, text, mode="16_9"):
     draw.text((w // 2, pos_y), wrapped_text, font=font, fill=font_color, anchor="mm", align="center")
     return img
 
-# =============================================================================
-# HELPER FUNCTIONS
-# =============================================================================
+def render_kenburns_clip(image_path, duration, output_mp4, mode="16_9", zoom_type="in"):
+    """
+    Renders a hardware-accelerated Ken Burns (pan & zoom) clip using FFmpeg.
+    Transforms static slideshow photos into fluid cinematic video.
+    """
+    w, h = (1920, 1080) if mode == "16_9" else (1080, 1920)
+    fps = 24
+    total_frames = max(12, int(duration * fps))
+
+    if zoom_type == "in":
+        # Smooth continuous zoom-in 1.0x -> 1.15x
+        zoom_expr = f"min(pzoom+0.0012,1.15)"
+        x_expr = "iw/2-(iw/zoom/2)"
+        y_expr = "ih/2-(ih/zoom/2)"
+    elif zoom_type == "out":
+        # Smooth continuous zoom-out 1.15x -> 1.0x
+        zoom_expr = f"if(eq(on,1),1.15,max(1.0,pzoom-0.0012))"
+        x_expr = "iw/2-(iw/zoom/2)"
+        y_expr = "ih/2-(ih/zoom/2)"
+    else:  # slow gentle pan
+        zoom_expr = "1.08"
+        x_expr = f"iw/2-(iw/zoom/2)+sin(on/{total_frames}*3.14)*30"
+        y_expr = "ih/2-(ih/zoom/2)"
+
+    vf = (
+        f"scale={w}:{h}:force_original_aspect_ratio=increase,"
+        f"crop={w}:{h},"
+        f"zoompan=z='{zoom_expr}':x='{x_expr}':y='{y_expr}':d={total_frames}:s={w}x{h}:fps={fps}"
+    )
+
+    cmd = [
+        "ffmpeg", "-y", "-loop", "1", "-i", image_path,
+        "-vf", vf,
+        "-t", f"{duration:.3f}",
+        "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+        output_mp4
+    ]
+
+    try:
+        import subprocess
+        res = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        return output_mp4
+    except Exception as e:
+        print(f"Ken Burns render fallback: {e}")
+        return None
 def load_history():
     if os.path.exists(HISTORY_FILE):
         with open(HISTORY_FILE, "r") as f:
@@ -442,11 +544,33 @@ def build_long_and_short_videos(topic_data):
         c_images[0].save(i1_path, quality=95)
         c_images[1].save(i2_path, quality=95)
 
-        clip1 = ImageClip(i1_path).with_duration(half_dur)
-        clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
+        # Dynamic Ken Burns Zoom & Pan (Alternates Zoom-In & Zoom-Out for retention)
+        v1_path = os.path.join(OUTPUT_DIR, f"temp_kb_long_{sid}_1.mp4")
+        v2_path = os.path.join(OUTPUT_DIR, f"temp_kb_long_{sid}_2.mp4")
+        z1 = "in" if sid % 2 == 1 else "out"
+        z2 = "out" if sid % 2 == 1 else "in"
+
+        k1 = render_kenburns_clip(i1_path, half_dur, v1_path, mode="16_9", zoom_type=z1)
+        k2 = render_kenburns_clip(i2_path, dur - half_dur, v2_path, mode="16_9", zoom_type=z2)
+
+        from moviepy import VideoFileClip
+        if k1 and os.path.exists(k1) and k2 and os.path.exists(k2):
+            clip1 = VideoFileClip(k1)
+            clip2 = VideoFileClip(k2)
+        else:
+            clip1 = ImageClip(i1_path).with_duration(half_dur)
+            clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
 
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         long_clips.append(scene_v)
+
+    # APPEND SUBSCRIBE CTA TO LONG-FORM VIDEO (BEFORE GPAY)
+    print("🔔 Appending Subscribe CTA to Long-Form Video...")
+    sub_audio_long = asyncio.run(generate_scene_audio("long_sub", 98, SUBSCRIBE_CTA_LONG_TEXT))
+    sub_audio_long_clip = AudioFileClip(sub_audio_long)
+    sub_card_long = generate_subscribe_cta_card(mode="16_9")
+    sub_clip_long = ImageClip(sub_card_long).with_duration(sub_audio_long_clip.duration + 0.4).with_audio(sub_audio_long_clip)
+    long_clips.append(sub_clip_long)
 
     # APPEND GPAY DONATION OUTRO TO LONG-FORM VIDEO
     print("💳 Appending GPay Donation Outro to Long-Form Video...")
@@ -459,7 +583,15 @@ def build_long_and_short_videos(topic_data):
     full_long_video = concatenate_videoclips(long_clips, method="compose")
     long_mp4 = os.path.join(LONG_UPLOADS_DIR, f"Daily_Episode_{ep_num}_Long_16_9.mp4")
     print(f"🚀 Rendering Deep Long-Form Video ({full_long_video.duration:.1f}s / {int(full_long_video.duration/60)}m {int(full_long_video.duration%60)}s) -> {long_mp4}")
-    full_long_video.write_videofile(long_mp4, fps=24, codec="libx264", audio_codec="aac", preset="ultrafast", threads=16)
+    full_long_video.write_videofile(
+        long_mp4,
+        fps=24,
+        codec="libx264",
+        audio_codec="aac",
+        preset="ultrafast",
+        threads=16,
+        ffmpeg_params=["-movflags", "+faststart", "-pix_fmt", "yuv420p"]
+    )
 
     # 2. BUILD SHORT HOOK A (9:16 Vertical, WITH GPAY OUTRO)
     print("\n🎙️ Generating YouTube Short Hook A (with GPay Outro)...")
@@ -491,10 +623,30 @@ def build_long_and_short_videos(topic_data):
         c_images[0].save(i1_path, quality=95)
         c_images[1].save(i2_path, quality=95)
 
-        clip1 = ImageClip(i1_path).with_duration(half_dur)
-        clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
+        # Dynamic Ken Burns Zoom on Shorts
+        v1_path = os.path.join(OUTPUT_DIR, f"temp_kb_short_a_{sid}_1.mp4")
+        v2_path = os.path.join(OUTPUT_DIR, f"temp_kb_short_a_{sid}_2.mp4")
+        k1 = render_kenburns_clip(i1_path, half_dur, v1_path, mode="9_16", zoom_type="in")
+        k2 = render_kenburns_clip(i2_path, dur - half_dur, v2_path, mode="9_16", zoom_type="out")
+
+        from moviepy import VideoFileClip
+        if k1 and os.path.exists(k1) and k2 and os.path.exists(k2):
+            clip1 = VideoFileClip(k1)
+            clip2 = VideoFileClip(k2)
+        else:
+            clip1 = ImageClip(i1_path).with_duration(half_dur)
+            clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
+
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         short_a_clips.append(scene_v)
+
+    # APPEND SUBSCRIBE CTA TO SHORT A (RIGHT BEFORE GPAY OUTRO)
+    print("🔔 Appending Subscribe CTA to Short Hook A...")
+    sub_audio_short_a = asyncio.run(generate_scene_audio("short_a_sub", 98, SUBSCRIBE_CTA_SHORT_TEXT))
+    sub_audio_short_a_clip = AudioFileClip(sub_audio_short_a)
+    sub_card_short_a = generate_subscribe_cta_card(mode="9_16")
+    sub_clip_short_a = ImageClip(sub_card_short_a).with_duration(sub_audio_short_a_clip.duration + 0.3).with_audio(sub_audio_short_a_clip)
+    short_a_clips.append(sub_clip_short_a)
 
     # APPEND GPAY DONATION OUTRO TO SHORT A
     print("💳 Appending GPay Donation Outro to Short Hook A...")
@@ -507,7 +659,15 @@ def build_long_and_short_videos(topic_data):
     full_short_a = concatenate_videoclips(short_a_clips, method="compose")
     short_a_mp4 = os.path.join(SHORTS_UPLOADS_DIR, f"Daily_Episode_{ep_num}_ShortA_9_16.mp4")
     print(f"🚀 Rendering Short Hook A ({full_short_a.duration:.1f}s) -> {short_a_mp4}")
-    full_short_a.write_videofile(short_a_mp4, fps=24, codec="libx264", audio_codec="aac", preset="ultrafast", threads=16)
+    full_short_a.write_videofile(
+        short_a_mp4,
+        fps=24,
+        codec="libx264",
+        audio_codec="aac",
+        preset="ultrafast",
+        threads=16,
+        ffmpeg_params=["-movflags", "+faststart", "-pix_fmt", "yuv420p"]
+    )
 
     # 3. BUILD SHORT HOOK B (9:16 Vertical, WITH GPAY OUTRO)
     print("\n🎙️ Generating YouTube Short Hook B (with GPay Outro)...")
@@ -539,10 +699,29 @@ def build_long_and_short_videos(topic_data):
         c_images[0].save(i1_path, quality=95)
         c_images[1].save(i2_path, quality=95)
 
-        clip1 = ImageClip(i1_path).with_duration(half_dur)
-        clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
+        # Dynamic Ken Burns Zoom on Shorts
+        v1_path = os.path.join(OUTPUT_DIR, f"temp_kb_short_b_{sid}_1.mp4")
+        v2_path = os.path.join(OUTPUT_DIR, f"temp_kb_short_b_{sid}_2.mp4")
+        k1 = render_kenburns_clip(i1_path, half_dur, v1_path, mode="9_16", zoom_type="in")
+        k2 = render_kenburns_clip(i2_path, dur - half_dur, v2_path, mode="9_16", zoom_type="out")
+
+        if k1 and os.path.exists(k1) and k2 and os.path.exists(k2):
+            clip1 = VideoFileClip(k1)
+            clip2 = VideoFileClip(k2)
+        else:
+            clip1 = ImageClip(i1_path).with_duration(half_dur)
+            clip2 = ImageClip(i2_path).with_duration(dur - half_dur)
+
         scene_v = concatenate_videoclips([clip1, clip2], method="compose").with_audio(audio_clip)
         short_b_clips.append(scene_v)
+
+    # APPEND SUBSCRIBE CTA TO SHORT B (RIGHT BEFORE GPAY OUTRO)
+    print("🔔 Appending Subscribe CTA to Short Hook B...")
+    sub_audio_short_b = asyncio.run(generate_scene_audio("short_b_sub", 98, SUBSCRIBE_CTA_SHORT_TEXT))
+    sub_audio_short_b_clip = AudioFileClip(sub_audio_short_b)
+    sub_card_short_b = generate_subscribe_cta_card(mode="9_16")
+    sub_clip_short_b = ImageClip(sub_card_short_b).with_duration(sub_audio_short_b_clip.duration + 0.3).with_audio(sub_audio_short_b_clip)
+    short_b_clips.append(sub_clip_short_b)
 
     # APPEND GPAY DONATION OUTRO TO SHORT B
     print("💳 Appending GPay Donation Outro to Short Hook B...")
@@ -555,7 +734,15 @@ def build_long_and_short_videos(topic_data):
     full_short_b = concatenate_videoclips(short_b_clips, method="compose")
     short_b_mp4 = os.path.join(SHORTS_UPLOADS_DIR, f"Daily_Episode_{ep_num}_ShortB_9_16.mp4")
     print(f"🚀 Rendering Short Hook B ({full_short_b.duration:.1f}s) -> {short_b_mp4}")
-    full_short_b.write_videofile(short_b_mp4, fps=24, codec="libx264", audio_codec="aac", preset="ultrafast", threads=16)
+    full_short_b.write_videofile(
+        short_b_mp4,
+        fps=24,
+        codec="libx264",
+        audio_codec="aac",
+        preset="ultrafast",
+        threads=16,
+        ffmpeg_params=["-movflags", "+faststart", "-pix_fmt", "yuv420p"]
+    )
 
     return long_mp4, short_a_mp4, short_b_mp4
 

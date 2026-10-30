@@ -66,7 +66,14 @@ def create_episode(topic_title, scene_data):
 
     print("\n🎬 Rendering Final MP4 Video...")
     final_video = concatenate_videoclips(clips, method="compose")
-    final_video.write_videofile(final_mp4, fps=24, codec="libx264", audio_codec="aac", preset="medium")
+    final_video.write_videofile(
+        final_mp4,
+        fps=24,
+        codec="libx264",
+        audio_codec="aac",
+        preset="medium",
+        ffmpeg_params=["-movflags", "+faststart", "-pix_fmt", "yuv420p"]
+    )
 
     print(f"\n🎉 SUCCESS! Generated: {final_mp4}\n")
 
