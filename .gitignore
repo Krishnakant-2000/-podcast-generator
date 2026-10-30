@@ -6,6 +6,10 @@ token.json
 # Large Video Files & Temporary Cache
 uploads/
 *.mp4
+!intro_video.mp4
+!outro_video.mp4
+!generic_intro.mp4
+!generic_outro.mp4
 *.mp3
 *.jpg
 *.jpeg
