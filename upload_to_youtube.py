@@ -21,9 +21,15 @@ def get_authenticated_service():
             credentials = pickle.load(token)
 
     if not credentials or not credentials.valid:
+        refreshed = False
         if credentials and credentials.expired and credentials.refresh_token:
-            credentials.refresh(Request())
-        else:
+            try:
+                credentials.refresh(Request())
+                refreshed = True
+            except Exception as e:
+                print(f"⚠️ Token refresh failed ({e}). Re-authenticating via browser flow...")
+
+        if not refreshed:
             if not os.path.exists(CLIENT_SECRETS_FILE):
                 print(f"❌ ERROR: Missing '{CLIENT_SECRETS_FILE}'!")
                 print("Please download client_secret.json from Google Cloud Console and place it in the ai_podcast_generator folder.")
