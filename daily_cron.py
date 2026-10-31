@@ -739,8 +739,33 @@ def build_long_and_short_videos(topic_data, user_audio_dir=None):
         dur = audio_clip.duration + 0.3
         half_dur = dur / 2.0
 
-        raw1 = images[(i * 2) % len(images)]
-        raw2 = images[(i * 2 + 1) % len(images)]
+        # 1. Check for custom Gemini AI image for this scene first
+        custom_img1 = os.path.join(OUTPUT_DIR, f"gemini_scene_{sid}_1.png")
+        custom_img2 = os.path.join(OUTPUT_DIR, f"gemini_scene_{sid}_2.png")
+        desktop_img1 = os.path.join(os.path.expanduser("~"), "Desktop", f"gemini_scene_{sid}_1.png")
+        desktop_img2 = os.path.join(os.path.expanduser("~"), "Desktop", f"gemini_scene_{sid}_2.png")
+
+        if os.path.exists(custom_img1) or os.path.exists(desktop_img1):
+            target_file1 = custom_img1 if os.path.exists(custom_img1) else desktop_img1
+            target_file2 = custom_img2 if os.path.exists(custom_img2) else (desktop_img2 if os.path.exists(desktop_img2) else target_file1)
+            print(f"  🎨 Using custom Gemini AI artwork for Scene {sid}: {os.path.basename(target_file1)}")
+            raw1 = Image.open(target_file1).convert("RGB")
+            raw2 = Image.open(target_file2).convert("RGB")
+        else:
+            # 2. Targeted scene search from Wikimedia
+            scene_query = s.get("search_query")
+            scene_images = []
+            if scene_query:
+                scene_images = fetch_wikimedia_hd_images(scene_query, count=2)
+
+            if len(scene_images) >= 2:
+                raw1, raw2 = scene_images[0], scene_images[1]
+            elif len(scene_images) == 1:
+                raw1 = scene_images[0]
+                raw2 = images[(i * 2 + 1) % len(images)]
+            else:
+                raw1 = images[(i * 2) % len(images)]
+                raw2 = images[(i * 2 + 1) % len(images)]
 
         c_images = []
         for raw in [raw1, raw2]:
