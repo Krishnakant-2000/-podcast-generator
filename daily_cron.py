@@ -351,6 +351,7 @@ def prepare_avatar_intro_clip(mode="16_9", topic_title="Lepakshi Temple Mystery"
     font_main = 54 if mode == "16_9" else 64
     font_sub = 36 if mode == "16_9" else 42
     margin_v = 70 if mode == "16_9" else 220
+    clean_sub = topic_title.split(':')[0].strip().upper() if ':' in topic_title else topic_title.strip().upper()
 
     ass_content = f"""[Script Info]
 ScriptType: v4.00+
@@ -366,7 +367,7 @@ Style: TopicSub,Arial Black,{font_sub},&H00FFFFFF,&H000000FF,&H00000000,&H900000
 [Events]
 Format: Layer, Start, End, Style, Text
 Dialogue: 0,0:00:00.00,0:00:15.00,ChannelHeading,ALL AROUND PODCAST
-Dialogue: 0,0:00:00.00,0:00:15.00,TopicSub,{topic_title.upper()}
+Dialogue: 0,0:00:00.00,0:00:15.00,TopicSub,{clean_sub}
 """
     with open(ass_path, "w", encoding="utf-8") as f:
         f.write(ass_content)
@@ -705,28 +706,23 @@ def build_long_and_short_videos(topic_data, user_audio_dir=None):
 
     if user_audio_dir is None:
         user_audio_dir = topic_data.get("user_audio_dir")
-    if user_audio_dir is None:
-        default_desktop = os.path.join(os.path.expanduser("~"), "Desktop", "audio lepakshi")
-        if os.path.exists(default_desktop):
-            user_audio_dir = default_desktop
-        else:
-            default_local = os.path.join(OUTPUT_DIR, "user_voice")
-            if os.path.exists(default_local):
-                user_audio_dir = default_local
 
     if user_audio_dir and os.path.exists(user_audio_dir):
         print(f"🎙️ USER AUDIO DETECTED: Automatically enhancing and syncing your real voice from: {user_audio_dir}")
+    else:
+        user_audio_dir = None
+        print(f"🎙️ Using British Ryan Voice ({VOICE}) for professional documentary narration...")
 
     print(f"🎨 Fetching HD images for Deep Long-Form ({len(long_scenes)} scenes)...")
     images = fetch_wikimedia_hd_images(topic_data["search_term"], count=len(long_scenes) * 2)
 
     # 1. BUILD DEEP LONG-FORM VIDEO (16:9 Widescreen, 10 MINUTES GUARANTEED)
-    print(f"🎙️ Generating Deep Long-Form Audio Clips with Voice/Recordings...")
+    print(f"🎙️ Generating Deep Long-Form Audio Clips with Voice: {VOICE}...")
     long_clips = []
 
     from moviepy import VideoFileClip
     # 0. PREPEND AVATAR INTRO CLIP (WITH CHANNEL NAME AT TOP-MIDDLE)
-    intro_mp4 = prepare_avatar_intro_clip(mode="16_9", topic_title=topic_data.get("title", "Lepakshi Temple Mystery"))
+    intro_mp4 = prepare_avatar_intro_clip(mode="16_9", topic_title=topic_data.get("title", "The Rustless Iron Pillar"))
     if intro_mp4 and os.path.exists(intro_mp4):
         print("🎬 Prepending Avatar Intro Video (16:9)...")
         long_clips.append(VideoFileClip(intro_mp4))
@@ -832,7 +828,7 @@ def build_long_and_short_videos(topic_data, user_audio_dir=None):
     short_a_clips = []
 
     # Prepend Avatar Intro Video (9:16)
-    intro_short_a = prepare_avatar_intro_clip(mode="9_16", topic_title=topic_data.get("title", "Lepakshi Temple Mystery"))
+    intro_short_a = prepare_avatar_intro_clip(mode="9_16", topic_title=topic_data.get("title", "The Rustless Iron Pillar"))
     if intro_short_a and os.path.exists(intro_short_a):
         print("🎬 Prepending Avatar Intro Video to Short A (9:16)...")
         short_a_clips.append(VideoFileClip(intro_short_a))
@@ -912,7 +908,7 @@ def build_long_and_short_videos(topic_data, user_audio_dir=None):
     short_b_clips = []
 
     # Prepend Avatar Intro Video (9:16)
-    intro_short_b = prepare_avatar_intro_clip(mode="9_16", topic_title=topic_data.get("title", "Lepakshi Temple Mystery"))
+    intro_short_b = prepare_avatar_intro_clip(mode="9_16", topic_title=topic_data.get("title", "The Rustless Iron Pillar"))
     if intro_short_b and os.path.exists(intro_short_b):
         print("🎬 Prepending Avatar Intro Video to Short B (9:16)...")
         short_b_clips.append(VideoFileClip(intro_short_b))
